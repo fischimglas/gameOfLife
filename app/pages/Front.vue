@@ -59,11 +59,12 @@
         },
         methods: {
             createMatrix() {
-                let tmp = M.create(this.size);
-                this.$store.commit('setMatrix', tmp)
+                M.init(this.size);
+                // this.$store.commit('setMatrix', tmp)
             },
             clearMatrix() {
-                this.$store.commit('clearMatrix')
+                M.clear();
+                // this.$store.commit('clearMatrix')
             },
             updateG() {
                 let update = G.update(M.get());
@@ -75,7 +76,6 @@
                 let update = _.map(M.get(), (p, ix) => {
                     return Boolean(_.random(0, 1))
                 });
-                console.log('update', update);
                 M.update(update);
             },
         },

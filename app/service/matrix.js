@@ -1,18 +1,33 @@
 import _ from 'lodash';
 import $store from './store';
 
+let matrixData = {};
+
 const matrix = {
     get() {
-        return $store.state.matrix;
+        return _.values(matrixData);
     },
     getCell(x, y) {
-        return $store.state.matrix.find(it => it.x === x && it.y === y);
+        return matrixData[x + 'X' + y];
     },
-    set(matrix) {
-        return $store.commit('setMatrix', matrix);
+    init(size) {
+        this.clear();
+        let tmp = this.create(size);
+        _.each(tmp, p => {
+            matrixData[p.x + 'X' + p.y] = p;
+        });
+    },
+    clear() {
+        _.each(matrixData, (p, i) => {
+            delete matrixData[i];
+        });
     },
     update(update) {
-        return $store.commit('updateMatrix', update);
+        let keys = _.keys(matrixData);
+        update.map((up, ix) => {
+            let currentKy = keys[ix];
+            matrixData[currentKy].a = up;
+        });
     },
 
     /**
@@ -49,4 +64,5 @@ const matrix = {
 
 };
 
+window.M = matrix;
 export default matrix;
