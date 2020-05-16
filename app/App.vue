@@ -32,7 +32,6 @@
         components: {},
         mounted() {
             // Adds some test data to store.
-            this.$store.commit('addUser', {id: 1, name: 'Test User'});
         }
     }
 
