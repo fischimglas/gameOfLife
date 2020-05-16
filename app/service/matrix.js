@@ -7,14 +7,17 @@ const matrix = {
     get() {
         return _.values(matrixData);
     },
-    getCell(x, y) {
+    key({x, y}) {
+        return x + 'X' + y;
+    },
+    getCellByPos({x, y}) {
         return matrixData[x + 'X' + y];
     },
     init(size) {
         this.clear();
         let tmp = this.create(size);
         _.each(tmp, p => {
-            matrixData[p.x + 'X' + p.y] = p;
+            matrixData[matrix.key(p)] = p;
         });
     },
     clear() {
@@ -29,6 +32,12 @@ const matrix = {
             matrixData[currentKy].a = up;
         });
     },
+    updateCell(update) {
+        let c = matrix.getCellByPos(update);
+        _.each(update, (up, idx) => {
+            c[idx] = up;
+        });
+    },
 
     /**
      * Get cells around one
@@ -37,12 +46,12 @@ const matrix = {
      */
     getSurroundingCells(cell) {
         let cells = [];
-        cells.push(this.getCell(cell.x, cell.y - 1));
-        cells.push(this.getCell(cell.x - 1, cell.y - 1));
-        cells.push(this.getCell(cell.x - 1, cell.y));
-        cells.push(this.getCell(cell.x, cell.y + 1));
-        cells.push(this.getCell(cell.x + 1, cell.y + 1));
-        cells.push(this.getCell(cell.x + 1, cell.y));
+        cells.push(this.getCellByPos({x: cell.x, y: cell.y - 1}));
+        cells.push(this.getCellByPos({x: cell.x - 1, y: cell.y - 1}));
+        cells.push(this.getCellByPos({x: cell.x - 1, y: cell.y}));
+        cells.push(this.getCellByPos({x: cell.x, y: cell.y + 1}));
+        cells.push(this.getCellByPos({x: cell.x + 1, y: cell.y + 1}));
+        cells.push(this.getCellByPos({x: cell.x + 1, y: cell.y}));
         return cells.filter(it => _.isObject(it));
     },
 

@@ -60,6 +60,10 @@
         methods: {
             createMatrix() {
                 M.init(this.size);
+                canvas.click(p => {
+                    console.log('Clicked on Element ', p);
+
+                });
                 // this.$store.commit('setMatrix', tmp)
             },
             clearMatrix() {
