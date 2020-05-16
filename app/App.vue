@@ -5,10 +5,10 @@
             <div class="uk-navbar-left">
                 <ul class="uk-navbar-nav">
                     <li class="uk-active">
-                        <router-link :to="{name:'front'}" href="#">Front</router-link>
+                        <router-link :to="{name:'home'}" href="#">Home</router-link>
                     </li>
                     <li class="uk-active">
-                        <router-link :to="{name:'user'}" href="#">User</router-link>
+                        <router-link :to="{name:'fullscreen'}" href="#">FullScreen</router-link>
                     </li>
                 </ul>
             </div>
@@ -17,12 +17,9 @@
 
             </div>
         </nav>
-        <div class="uk-container">
-            <div class="uk-panel">
-                <!-- ROUTES -->
-                <router-view></router-view>
-            </div>
-        </div>
+
+        <!-- ROUTES -->
+        <router-view></router-view>
     </div>
 </template>
 <script>

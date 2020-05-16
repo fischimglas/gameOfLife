@@ -1,29 +1,36 @@
 import _ from 'lodash';
-import $store from './store';
 import M from './matrix';
 
+/**
+ * Game Of Life, by John Conway
+ */
 class gameoflife {
     constructor(matrix) {
-        console.warn('New Game of Life');
+        // console.warn('New Game of Life');
         this.isRunning = false;
-        this.tickTime = 1200;
+        this.tickTime = 300;
         this.matrix = matrix;
-        this.tickTimeout = null
+        this.tickTimeout = null;
+        this.liveActivity = null;
         // this.start();
     }
 
     start() {
         if(!this.tickTimeout) {
-            console.warn('Start Game of Life');
+            // console.warn('Start Game of Life');
             this.isRunning = true;
             this.tick();
         }
     }
 
+    activity() {
+        return this.liveActivity;
+    }
+
     stop() {
         clearTimeout(this.tickTimeout);
         this.tickTimeout = null;
-        console.warn('Stop Game of Life');
+        // console.warn('Stop Game of Life');
         this.isRunning = false;
     }
 
@@ -33,7 +40,9 @@ class gameoflife {
 
     tick() {
         let update = G.calculateCells(this.matrix);
-        console.warn('Tick Game of Life', this.matrix.update(update));
+        this.liveActivity = _.size(_.values(update));
+
+        // console.warn('Tick Game of Life', this.activity());
         this.matrix.update(update);
         this.tickTimeout = setTimeout(() => {
             if (this.isRunning) {
@@ -53,19 +62,9 @@ const G = {
         return new gameoflife(matrix)
     },
 
-    // tick() {
-    //     let update = this.update(M.get());
-    //     M.update(update);
-    //
-    //     setInterval(() => {
-    //
-    //         if (this.isRunning) {
-    //             this.tick();
-    //         }
-    //     }, this.cickTime);
-    // },
-
     /**
+     * Game Of Life, by John Conway
+     *
      * Update Matrix State according to Game of Life Rules
      *
      * - Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -80,7 +79,7 @@ const G = {
     calculateCells(matrix) {
 
         let cells = matrix.get();
-        console.log('Before Update', cells.filter(it => it.a === true).length);
+        // console.log('Before Update', cells.filter(it => it.a === true).length);
         let update = [];
         _.each(cells, p => {
             if (p && M.key(p)) {
@@ -90,9 +89,7 @@ const G = {
                 let cellsAlive = _.sum(_.map(nCells, it => it.a === true ? 1 : 0));
                 // console.log(p.x, p.y, cellsAlive);
                 let newState = p.a;
-                /**
-                 * GAME OF LIFE rules
-                 */
+
                 // Currently Alive
                 if (p.a === true) {
                     // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -113,7 +110,6 @@ const G = {
         });
         return update;
     }
-
 };
 
 export default G;

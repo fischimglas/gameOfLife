@@ -11,7 +11,7 @@
     import Matrix from "../components/matrix";
 
     export default {
-        name: 'front',
+        name: 'home',
         components: {Matrix}
     }
 

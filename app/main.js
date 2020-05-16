@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './service/router'
 import "vueify/lib/insert-css" // required for .vue file <style> tags
 import store from './service/store';
 

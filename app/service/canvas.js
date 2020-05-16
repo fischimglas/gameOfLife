@@ -27,8 +27,10 @@ class Canvas {
         this.elementId = elementId;
 
         window.requestAnimationFrame(() => {
+            this.ctx = document.getElementById(this.elementId).getContext('2d');
             this.draw()
         });
+
     }
 
     setReadDataHandler(readDataFnc) {
@@ -36,7 +38,10 @@ class Canvas {
     }
 
     draw() {
-        let ctx = document.getElementById(this.elementId).getContext('2d');
+        if(!document.getElementById(this.elementId)) {
+            return false;
+        }
+        let ctx = this.ctx;
 
         // Need to set dimension!!
         // TODO
@@ -49,7 +54,7 @@ class Canvas {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         // ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
         ctx.save();
-        ctx.translate(this.cellsize / 2, this.cellsize / 2);
+        // ctx.translate(this.cellsize / 2, this.cellsize / 2);
 
         // TODO
         let distance = this.cellsize * 1.5;

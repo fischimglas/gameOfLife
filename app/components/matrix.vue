@@ -1,32 +1,31 @@
 <template>
-    <div>
+    <div class="matrix" v-bind:class="{'fullscreen':fullscreen}">
+        ID{{id}}
         <canvas :id="id" :style="style" :width="width" :height="height"></canvas>
-
-        <ul class="uk-list">
-            <li v-if="matrix">
-                <label>Cells</label>
-                <span>{{matrix.get().length}}</span>
-            </li>
-            <li>
-                <label>Cellsize {{cellsize}}</label>
-                <input type="range" v-model="cellsize" min="1" max="100"/>
-            </li>
-            <li>
-                <label>Speed {{speed}}</label>
-                <input type="range" v-model="speed" min="1" max="100"/>
-            </li>
-            <li>
-                <label>Width <span>{{width}}</span></label>
-                <input type="range" v-model="width" min="30" max="500"/>
-            </li>
-            <li>
-                <label>Height <span>{{height}}</span></label>
-                <input type="range" v-model="height" min="30" max="500"/>
-            </li>
-        </ul>
-        <vk-button @click="initView">initView</vk-button>
-        <vk-button @click="start">Start</vk-button>
-        <vk-button @click="stop">Stop</vk-button>
+        <template v-if="showControls">
+            <ul class="uk-list">
+                <li v-if="matrix">
+                    <label>Cells Alive {{matrix.alive()}}</label>
+                    <label>Cells Dead {{matrix.dead()}}</label>
+                    <label>Activity {{GOL.activity()}}</label>
+                </li>
+                <li>
+                    <label>Speed {{speed}}</label>
+                    <input type="range" v-model="speed" min="1" max="100"/>
+                </li>
+                <li>
+                    <label>Width <span>{{width}}</span></label>
+                    <input type="range" v-model="width" min="30" max="500"/>
+                </li>
+                <li>
+                    <label>Height <span>{{height}}</span></label>
+                    <input type="range" v-model="height" min="30" max="500"/>
+                </li>
+            </ul>
+            <vk-button @click="initView">initView</vk-button>
+            <vk-button @click="start">Start</vk-button>
+            <vk-button @click="stop">Stop</vk-button>
+        </template>
     </div>
 </template>
 
@@ -41,6 +40,11 @@
 
     export default {
         name: 'matrix',
+        props: {
+            fullscreen: {type: Boolean, required: false, default: false},
+            showControls: {type: Boolean, required: false, default: false},
+            autostart: {type: Boolean, required: false, default: false},
+        },
         components: {},
         computed: {
             style() {
@@ -92,17 +96,30 @@
                 });
 
                 this.GOL = G.newGame(this.matrix);
+                if(this.autostart) {
+                    this.GOL.start();
+                }
             }
         },
         mounted() {
             this.id = _.uniqueId('can');
+
+            if(this.fullscreen) {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+            }
             this.initView();
         },
     }
 </script>
-<style>
-    canvas {
-        border: solid 3px red;
-        margin: 10px;
+<style lang="scss">
+    .matrix {
+        canvas {}
+
+        &.fullscreen,
+        &.fullscreen canvas {
+            width: 100vw;
+            height: 100vh;
+        }
     }
 </style>
