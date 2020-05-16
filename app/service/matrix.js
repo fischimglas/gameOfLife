@@ -1,77 +1,113 @@
 import _ from 'lodash';
-import $store from './store';
 
-let matrixData = {};
+class Matrix {
+    constructor(data) {
+        this.matrixData = {};
+        _.each(data, it => this.matrixData[M.key(it)] = it);
+    }
 
-const matrix = {
     get() {
-        return _.values(matrixData);
-    },
-    key({x, y}) {
-        return x + 'X' + y;
-    },
-    getCellByPos({x, y}) {
-        return matrixData[x + 'X' + y];
-    },
-    init(size) {
-        this.clear();
-        let tmp = this.create(size);
-        _.each(tmp, p => {
-            matrixData[matrix.key(p)] = p;
-        });
-    },
-    clear() {
-        _.each(matrixData, (p, i) => {
-            delete matrixData[i];
-        });
-    },
+        return _.values(this.matrixData);
+    }
+
+    cellByPos({x, y}) {
+        if (x && y) {
+            return this.matrixData[M.key({x, y})];
+        }
+    }
+
+    alive() {
+        return this.get().filter(it => it.a === true).length;
+    }
+
+    dead() {
+        return this.get().filter(it => it.a === false).length;
+    }
+
     update(update) {
-        let keys = _.keys(matrixData);
+        if (!update || update.length <= 0) {
+            return false;
+        }
+        let keys = _.keys(this.matrixData);
         update.map((up, ix) => {
             let currentKy = keys[ix];
-            matrixData[currentKy].a = up;
+            if(_.isObject(this.matrixData[currentKy])) {
+                console.warn('UPDATE CELLS', up);
+                this.matrixData[currentKy].a = up;
+            }
         });
-    },
+    }
+
     updateCell(update) {
-        let c = matrix.getCellByPos(update);
-        _.each(update, (up, idx) => {
-            c[idx] = up;
-        });
-    },
+        if (!update || update.length <= 0) {
+            return false;
+        }
+        console.warn('Matrix:updateCell');
+        let c = this.cellByPos(update);
+        _.each(update, (up, idx) => c[idx] = up);
+    }
 
     /**
      * Get cells around one
      * @param cell
      * @return {Array}
      */
-    getSurroundingCells(cell) {
+    getSurroundingCells({x, y}) {
+        if (!x || !y) {
+            return false;
+        }
         let cells = [];
-        cells.push(this.getCellByPos({x: cell.x, y: cell.y - 1}));
-        cells.push(this.getCellByPos({x: cell.x - 1, y: cell.y - 1}));
-        cells.push(this.getCellByPos({x: cell.x - 1, y: cell.y}));
-        cells.push(this.getCellByPos({x: cell.x, y: cell.y + 1}));
-        cells.push(this.getCellByPos({x: cell.x + 1, y: cell.y + 1}));
-        cells.push(this.getCellByPos({x: cell.x + 1, y: cell.y}));
+        cells.push(this.cellByPos({x: x, y: y - 1}));
+        cells.push(this.cellByPos({x: x - 1, y: y - 1}));
+        cells.push(this.cellByPos({x: x - 1, y: y}));
+        cells.push(this.cellByPos({x: x, y: y + 1}));
+        cells.push(this.cellByPos({x: x + 1, y: y + 1}));
+        cells.push(this.cellByPos({x: x + 1, y: y}));
         return cells.filter(it => _.isObject(it));
+    }
+}
+
+const M = {
+    /**
+     * @param x
+     * @param y
+     * @return {string}
+     */
+    key({x, y}) {
+        if (x && y) {
+            return x + 'X' + y;
+        }
+    },
+    /**
+     * Create new Matrix
+     *
+     * @param w
+     * @param h
+     */
+    init(w, h) {
+        let cells = this.createCells(w, h);
+        return new Matrix(cells);
     },
 
     /**
+     * Create Cells
      *
-     * @param size
+     * @param w
+     * @param h
      * @return {Array}
      */
-    create(size) {
+    createCells(w, h) {
         let m = [];
-        _.times(size, x => {
-            _.times(size, y => {
+        _.times(w, x => {
+            _.times(h, y => {
                 m.push({x: x, y: y, a: Boolean(_.random(0, 1))});
             });
         });
         return m;
-    },
-
+    }
 
 };
 
-window.M = matrix;
-export default matrix;
+window.Matrix = Matrix;
+
+export default M;

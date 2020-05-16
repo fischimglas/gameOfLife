@@ -7,6 +7,8 @@ import store from './service/store';
 import Vuikit from 'vuikit'
 import VuikitIcons from '@vuikit/icons'
 
+import DEV from './dev'
+
 // import '@vuikit/theme'
 
 Vue.use(Vuikit)
