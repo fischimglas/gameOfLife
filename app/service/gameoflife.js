@@ -8,16 +8,21 @@ class gameoflife {
         this.isRunning = false;
         this.tickTime = 1200;
         this.matrix = matrix;
+        this.tickTimeout = null
         // this.start();
     }
 
     start() {
-        console.warn('Start Game of Life');
-        this.isRunning = true;
-        this.tick();
+        if(!this.tickTimeout) {
+            console.warn('Start Game of Life');
+            this.isRunning = true;
+            this.tick();
+        }
     }
 
     stop() {
+        clearTimeout(this.tickTimeout);
+        this.tickTimeout = null;
         console.warn('Stop Game of Life');
         this.isRunning = false;
     }
@@ -27,12 +32,10 @@ class gameoflife {
     }
 
     tick() {
-        console.warn('Tick Game of Life');
         let update = G.calculateCells(this.matrix);
-        // console.warn('Tick Game of Life', update);
+        console.warn('Tick Game of Life', this.matrix.update(update));
         this.matrix.update(update);
-
-        setTimeout(() => {
+        this.tickTimeout = setTimeout(() => {
             if (this.isRunning) {
                 this.tick();
             }
@@ -77,32 +80,36 @@ const G = {
     calculateCells(matrix) {
 
         let cells = matrix.get();
-        console.log('Before Update', cells.filter(it => it.a === 1).length);
+        console.log('Before Update', cells.filter(it => it.a === true).length);
+        let update = [];
+        _.each(cells, p => {
+            if (p && M.key(p)) {
+                let nCells = matrix.getSurroundingCells(p);
 
-        let update = _.map(cells, p => {
-            let nCells = matrix.getSurroundingCells(p);
+                // How Many Cells are alive ?
+                let cellsAlive = _.sum(_.map(nCells, it => it.a === true ? 1 : 0));
+                // console.log(p.x, p.y, cellsAlive);
+                let newState = p.a;
+                /**
+                 * GAME OF LIFE rules
+                 */
+                // Currently Alive
+                if (p.a === true) {
+                    // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+                    if (cellsAlive < 2) newState = false;
+                    // Any live cell with two or three live neighbours lives on to the next generation.
+                    else if (cellsAlive === 2 || cellsAlive === 3) newState = true;
+                    // Any live cell with more than three live neighbours dies, as if by overpopulation.
+                    else if (cellsAlive > 3) newState = false;
+                    // Cell is currently dead
+                } else if (p.a === false) {
+                    if (cellsAlive === 3) newState = true;
+                }
 
-            // How Many Cells are alive ?
-            let cellsAlive = _.sum(_.map(nCells, it => it.a === true ? 1 : 0));
-            let newState = p.a;
-            /**
-             * GAME OF LIFE rules
-             */
-            // Currently Alive
-            if (p.a === true) {
-                // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                if (cellsAlive < 2) newState = false;
-                // Any live cell with two or three live neighbours lives on to the next generation.
-                else if (cellsAlive === 2 || cellsAlive === 3) newState = true;
-                // Any live cell with more than three live neighbours dies, as if by overpopulation.
-                else if (cellsAlive > 3) newState = false;
+                if (p.a !== newState) {
+                    update[M.key(p)] = newState;
+                }
             }
-            // Cell is currently dead
-            else {
-                // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-                if (cellsAlive === 3) newState = true;
-            }
-            return newState;
         });
         return update;
     }

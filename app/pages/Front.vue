@@ -1,7 +1,6 @@
 <template>
     <div class="uk-flex uk-flex-row">
         <matrix></matrix>
-        <matrix></matrix>
     </div>
 </template>
 

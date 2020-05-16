@@ -25,15 +25,14 @@ class Matrix {
     }
 
     update(update) {
-        if (!update || update.length <= 0) {
+        if (!_.isArray(update) ||_.size(_.values(update)) <= 0) {
             return false;
         }
-        let keys = _.keys(this.matrixData);
-        update.map((up, ix) => {
-            let currentKy = keys[ix];
-            if(_.isObject(this.matrixData[currentKy])) {
-                console.warn('UPDATE CELLS', up);
-                this.matrixData[currentKy].a = up;
+        let keys = _.keys(update);
+        let values = _.values(update);
+        _.each(keys, (key, ix) => {
+            if(_.isObject(this.matrixData[key])) {
+                this.matrixData[key].a = values[ix];
             }
         });
     }
@@ -42,7 +41,6 @@ class Matrix {
         if (!update || update.length <= 0) {
             return false;
         }
-        console.warn('Matrix:updateCell');
         let c = this.cellByPos(update);
         _.each(update, (up, idx) => c[idx] = up);
     }

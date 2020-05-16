@@ -15,13 +15,12 @@ const DEV = {
 
 
         // let GOL = G.newGame(matrix);
-        // GOL.start();
-
-        let test = matrix.getSurroundingCells({x:10,y:10});
-        let update = _.map(test, cell => {
-            return 2;
-        })
+        let update = G.calculateCells(matrix);
         matrix.update(update);
+
+        console.log('update', update);
+
+
     }
 }
 

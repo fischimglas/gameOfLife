@@ -24,7 +24,7 @@
                 <input type="range" v-model="height" min="30" max="500"/>
             </li>
         </ul>
-        <vk-button @click="update">Update</vk-button>
+        <vk-button @click="initView">initView</vk-button>
         <vk-button @click="start">Start</vk-button>
         <vk-button @click="stop">Stop</vk-button>
     </div>
@@ -62,7 +62,6 @@
                 width: 300,
                 height: 300,
                 speed: 10,
-
                 matrix: null,
                 GOL: null,
             }
@@ -74,7 +73,7 @@
             stop() {
                 this.GOL.stop();
             },
-            update() {
+            initView() {
                 let cf = {
                     elementId: this.id,
                     width: this.width,
@@ -93,17 +92,11 @@
                 });
 
                 this.GOL = G.newGame(this.matrix);
-
-                let test = this.matrix.getSurroundingCells({x:10,y:10});
-                let update = _.map(test, cell => {
-                    return 2;
-                })
-                this.matrix.update(update);
             }
         },
         mounted() {
             this.id = _.uniqueId('can');
-            this.update();
+            this.initView();
         },
     }
 </script>
