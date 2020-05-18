@@ -25,13 +25,13 @@ class Matrix {
     }
 
     update(update) {
-        if (!_.isArray(update) ||_.size(_.values(update)) <= 0) {
+        if (!_.isArray(update) || _.size(_.values(update)) <= 0) {
             return false;
         }
         let keys = _.keys(update);
         let values = _.values(update);
         _.each(keys, (key, ix) => {
-            if(_.isObject(this.matrixData[key])) {
+            if (_.isObject(this.matrixData[key])) {
                 this.matrixData[key].a = values[ix];
             }
         });
@@ -79,12 +79,26 @@ const M = {
     /**
      * Create new Matrix
      *
-     * @param w
-     * @param h
+     * @param cellsHorizontal
+     * @param cellsVertical
      */
-    init(w, h) {
-        let cells = this.createCells(w, h);
+    init(cellsHorizontal, cellsVertical) {
+        let cells = this.createCells(cellsHorizontal, cellsVertical);
         return new Matrix(cells);
+    },
+
+    /**
+     * Translate pos from a list of poisitions
+     *
+     * @param x
+     * @param y
+     * @param positions
+     * @return {*}
+     */
+    translatePositions(x, y, positions) {
+        return positions.map(it => {
+            return {x: (x + it.x), y: (x + it.y)}
+        })
     },
 
     /**
@@ -105,7 +119,5 @@ const M = {
     }
 
 };
-
-window.Matrix = Matrix;
 
 export default M;

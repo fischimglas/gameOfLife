@@ -1,6 +1,5 @@
 <template>
     <div class="matrix" v-bind:class="{'fullscreen':fullscreen}">
-        ID{{id}}
         <canvas :id="id" :style="style" :width="width" :height="height"></canvas>
         <template v-if="showControls">
             <ul class="uk-list">
@@ -32,11 +31,8 @@
 <script>
     import _ from 'lodash';
     import Uikit from 'uikit';
-    import UTILS from "../service/utils";
 
-    import canvas from '../service/canvas';
-    import M from '../service/matrix';
-    import G from '../service/gameoflife';
+    import gameOfLife from '../gameOfLife/gameoflife';
 
     export default {
         name: 'matrix',
@@ -44,6 +40,7 @@
             fullscreen: {type: Boolean, required: false, default: false},
             showControls: {type: Boolean, required: false, default: false},
             autostart: {type: Boolean, required: false, default: false},
+            visual: {type: Boolean, required: false, default: true},
         },
         components: {},
         computed: {
@@ -66,7 +63,6 @@
                 width: 300,
                 height: 300,
                 speed: 10,
-                matrix: null,
                 GOL: null,
             }
         },
@@ -80,31 +76,25 @@
             initView() {
                 let cf = {
                     elementId: this.id,
+                    visual: this.visual,
+                    autostart: this.autostart,
                     width: this.width,
                     height: this.height,
                     cellsize: this.cellsize,
                 };
 
-                // Amount of Cells
-                let w = Math.ceil(cf.width / cf.cellsize);
-                let h = Math.ceil(cf.height / cf.cellsize);
-
-                this.matrix = M.init(w, h);
-                let can = canvas.create(cf);
-                can.setReadDataHandler(() => {
-                    return this.matrix.get();
+                this.GOL = gameOfLife.init(cf);
+                this.GOL.onTick(tick => {
+                    console.log('TICK', tick);
                 });
 
-                this.GOL = G.newGame(this.matrix);
-                if(this.autostart) {
-                    this.GOL.start();
-                }
+                window.GOL = this.GOL;
             }
         },
         mounted() {
             this.id = _.uniqueId('can');
 
-            if(this.fullscreen) {
+            if (this.fullscreen) {
                 this.width = window.innerWidth;
                 this.height = window.innerHeight;
             }
@@ -114,7 +104,8 @@
 </script>
 <style lang="scss">
     .matrix {
-        canvas {}
+        canvas {
+        }
 
         &.fullscreen,
         &.fullscreen canvas {

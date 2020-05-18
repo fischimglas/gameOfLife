@@ -11,7 +11,6 @@
 
 <script>
     import _ from 'lodash';
-    import Uikit from 'uikit';
     import UTILS from "../service/utils";
     import Matrix from "../components/matrix";
 

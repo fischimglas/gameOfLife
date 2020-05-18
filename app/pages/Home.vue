@@ -1,6 +1,6 @@
 <template>
     <div class="uk-flex uk-flex-row">
-        <matrix></matrix>
+        <matrix :show-controls="true" :visual="true"></matrix>
     </div>
 </template>
 

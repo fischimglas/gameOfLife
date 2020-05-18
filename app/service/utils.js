@@ -1,7 +1,3 @@
+export default {
 
-
-const UTILS = {
-
-};
-
-export default UTILS;
+}

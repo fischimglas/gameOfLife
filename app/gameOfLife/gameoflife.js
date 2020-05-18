@@ -1,25 +1,37 @@
 import _ from 'lodash';
-import M from './matrix';
+import MATRIX from './matrix';
+import CANVAS from './canvas';
 
 /**
  * Game Of Life, by John Conway
  */
-class gameoflife {
-    constructor(matrix) {
-        // console.warn('New Game of Life');
+class gameOfLifeCore {
+    /**
+     *
+     * @param cf {width,height,cellsize,speed}
+     */
+    constructor(cf) {
         this.isRunning = false;
-        this.tickTime = 300;
-        this.matrix = matrix;
+        this.tickIndex = 0;
+        this.tickTime = 10;
         this.tickTimeout = null;
         this.liveActivity = null;
-        // this.start();
+        this.subscribers = [];
+
+        // Initiate Matrix
+        let dim = gameOfLife.amountOfCells(cf);
+        this.matrix = MATRIX.init(dim.w, dim.h);
+
+        this.setSpeed(cf.speed);
     }
 
     start() {
-        if(!this.tickTimeout) {
+        console.log('Start');
+        if (!this.tickTimeout) {
             // console.warn('Start Game of Life');
             this.isRunning = true;
             this.tick();
+            this.eventCalls('start');
         }
     }
 
@@ -27,23 +39,56 @@ class gameoflife {
         return this.liveActivity;
     }
 
+    /**
+     * Call Subscriber handler for an event
+     *
+     * @param event
+     * @param payLoad
+     * @return {any[]}
+     */
+    eventCalls(event, payLoad) {
+        return this.subscribers.filter(s => s.event === event).map(s => s.handler(payLoad));
+    }
+
+    addEventListener(event, handler) {
+        console.log('addEventListener', event);
+        return this.subscribers.push({event: event, handler: handler});
+    }
+
+    /**
+     * Add on tick handler
+     * @param handler
+     */
+    onTick(handler) {
+        this.addEventListener('tick', handler);
+    }
+
     stop() {
+        console.log('Stop')
+        this.isRunning = false;
         clearTimeout(this.tickTimeout);
         this.tickTimeout = null;
         // console.warn('Stop Game of Life');
-        this.isRunning = false;
+        this.eventCalls('stop');
     }
 
     setSpeed(speed) {
+        console.log('setSpeed', speed)
         this.tickTime = (1200 / 10 * speed);
+
+        this.eventCalls('setSpeed', speed);
     }
 
     tick() {
-        let update = G.calculateCells(this.matrix);
+        this.tickIndex += 1;
+        let update = gameOfLife.calculateCells(this.matrix);
         this.liveActivity = _.size(_.values(update));
 
         // console.warn('Tick Game of Life', this.activity());
         this.matrix.update(update);
+
+        this.eventCalls('tick', this.tickIndex);
+
         this.tickTimeout = setTimeout(() => {
             if (this.isRunning) {
                 this.tick();
@@ -56,10 +101,44 @@ class gameoflife {
     }
 }
 
-const G = {
+const gameOfLife = {
 
-    newGame(matrix) {
-        return new gameoflife(matrix)
+    init(cf) {
+        cf = _.defaults((cf || {}), {
+            autostart: false,
+            visual: false,
+
+            // If with visual
+            elementId: null,
+            width: 100,
+            height: 100,
+            speed: 2,
+            cellsize: 10
+        });
+        console.log('gameOfLife:init', cf);
+
+        let Game = new gameOfLifeCore(cf);
+
+
+        // Visual
+        if (cf.visual === true) {
+            let can = CANVAS.init(cf);
+            can.setReadDataHandler(() => Game.matrix.get());
+        }
+
+        if(cf.autostart) {
+            Game.start();
+        }
+
+        return Game;
+    },
+
+    amountOfCells({width, height, cellsize}) {
+
+        // Amount of Cells
+        let w = Math.ceil(width / cellsize);
+        let h = Math.ceil(height / cellsize);
+        return {w, h};
     },
 
     /**
@@ -81,17 +160,17 @@ const G = {
         let cells = matrix.get();
         // console.log('Before Update', cells.filter(it => it.a === true).length);
         let update = [];
-        _.each(cells, p => {
-            if (p && M.key(p)) {
-                let nCells = matrix.getSurroundingCells(p);
+        _.each(cells, cell => {
+            if (cell && MATRIX.key(cell)) {
+                let nCells = matrix.getSurroundingCells(cell);
 
                 // How Many Cells are alive ?
                 let cellsAlive = _.sum(_.map(nCells, it => it.a === true ? 1 : 0));
-                // console.log(p.x, p.y, cellsAlive);
-                let newState = p.a;
+                // console.log(cell.x, cell.y, cellsAlive);
+                let newState = cell.a;
 
                 // Currently Alive
-                if (p.a === true) {
+                if (cell.a === true) {
                     // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
                     if (cellsAlive < 2) newState = false;
                     // Any live cell with two or three live neighbours lives on to the next generation.
@@ -99,12 +178,12 @@ const G = {
                     // Any live cell with more than three live neighbours dies, as if by overpopulation.
                     else if (cellsAlive > 3) newState = false;
                     // Cell is currently dead
-                } else if (p.a === false) {
+                } else if (cell.a === false) {
                     if (cellsAlive === 3) newState = true;
                 }
 
-                if (p.a !== newState) {
-                    update[M.key(p)] = newState;
+                if (cell.a !== newState) {
+                    update[MATRIX.key(cell)] = newState;
                 }
             }
         });
@@ -112,4 +191,4 @@ const G = {
     }
 };
 
-export default G;
+export default gameOfLife;

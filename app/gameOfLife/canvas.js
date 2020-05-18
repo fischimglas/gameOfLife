@@ -20,6 +20,13 @@ let clickHandler = null;
 
 class Canvas {
 
+    /**
+     *
+     * @param width
+     * @param height
+     * @param elementId
+     * @param cellsize
+     */
     constructor({width, height, elementId, cellsize}) {
         this.width = width;
         this.height = height;
@@ -80,7 +87,10 @@ class Canvas {
     }
 }
 
-
+/**
+ *
+ * @type {}
+ */
 const canvas = {
     getCursorPosition(can, event) {
         var rect = can.getBoundingClientRect();
@@ -88,9 +98,20 @@ const canvas = {
         var y = event.clientY - rect.top;
         return {x: x, y: y};
     },
-    create(initCf) {
+    /**
+     *
+     * @param initCf
+     * @return {Canvas}
+     */
+    init(initCf) {
         return new Canvas(initCf);
     },
+    /**
+     *
+     * @param x
+     * @param y
+     * @return {{x: number, y: number}}
+     */
     calcCellIdByPos({x, y}) {
         let newX = Math.round(x / 10);
         let newY = Math.round(y / 10);

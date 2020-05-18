@@ -1,7 +1,8 @@
 {
-  "name": "brunch-vue-uikit-barebone",
-  "description": "Vue Skeleton App with Brunch and UIKIT",
+  "name": "gameoflife",
+  "description": "gameOfLife",
   "version": "0.0.1",
+  "main": "dist/gameOfLife.js",
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production"
@@ -12,13 +13,13 @@
     "email": "jvo.maurer@gmail.com"
   },
   "repository": {
-    "url": "https://bitbucket.org/fischimglas/brunch-vue-uikit-barebone.git"
+    "url": "https://bitbucket.org/fischimglas/gameoflife.git"
   },
   "keywords": [
     "vue",
     "brunch",
-    "skeleton",
-    "vue-router"
+    "vue-router",
+    "gameoflife"
   ],
   "dependencies": {
     "@babel/core": "^7.7.4",
