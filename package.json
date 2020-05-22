@@ -35,7 +35,7 @@
     "vue": "^2.4.4",
     "vue-router": "^2.7.0",
     "vuex": "^3.1.1",
-    "vuikit": "^0.8.10"
+    "vuikit": "^0.8.10",
     "babel-brunch": "^6.1.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-transform-runtime": "^6.23.0",
