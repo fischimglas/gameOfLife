@@ -84,9 +84,11 @@
                 };
 
                 this.GOL = gameOfLife.init(cf);
+                this.GOL.awakeRandomCells();
                 this.GOL.onTick(tick => {
                     console.log('TICK', tick);
                 });
+                this.GOL.start();
 
                 window.GOL = this.GOL;
             }

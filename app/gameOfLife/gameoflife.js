@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import MATRIX from './matrix';
-import CANVAS from './canvas';
+const _ = require('lodash');
+const MATRIX = require('./matrix');
+const CANVAS = require('./canvas');
 
 /**
  * Game Of Life, by John Conway
@@ -20,7 +20,10 @@ class gameOfLifeCore {
 
         // Initiate Matrix
         let dim = gameOfLife.amountOfCells(cf);
-        this.matrix = MATRIX.init(dim.w, dim.h);
+        this.matrix = MATRIX.init(dim.w, dim.h, cell => {
+            cell.a = false;
+            return cell;
+        });
 
         this.setSpeed(cf.speed);
     }
@@ -37,6 +40,15 @@ class gameOfLifeCore {
 
     activity() {
         return this.liveActivity;
+    }
+
+    awakeRandomCells() {
+        let update = [];
+        this.matrix.get().forEach(cell => {
+            cell.a = Boolean(_.random(0, 1));
+            update.push(cell);
+        });
+        this.matrix.update(update);
     }
 
     /**
@@ -64,7 +76,7 @@ class gameOfLifeCore {
     }
 
     stop() {
-        console.log('Stop')
+        console.log('Stop');
         this.isRunning = false;
         clearTimeout(this.tickTimeout);
         this.tickTimeout = null;
@@ -73,10 +85,23 @@ class gameOfLifeCore {
     }
 
     setSpeed(speed) {
-        console.log('setSpeed', speed)
+        console.log('setSpeed', speed);
         this.tickTime = (1200 / 10 * speed);
 
         this.eventCalls('setSpeed', speed);
+    }
+
+    addForm(positions) {
+        console.log('addForm', positions);
+        _.each(positions, pos => {
+            let cell = this.matrix.cellByPos(pos);
+            if (cell) {
+                this.matrix.cellByPos(pos).a = true;
+            } else {
+                console.log('cell not found');
+            }
+        });
+        this.eventCalls('addForm', positions);
     }
 
     tick() {
@@ -99,6 +124,16 @@ class gameOfLifeCore {
     setReadDataHandler(readDataFnc) {
         this.readDataFnc = readDataFnc;
     }
+
+    clear() {
+        this.stop();
+        this.matrix.get().map(it => it.a = false);
+        this.start();
+    }
+
+    cells() {
+        return this.matrix.get();
+    }
 }
 
 const gameOfLife = {
@@ -110,15 +145,13 @@ const gameOfLife = {
 
             // If with visual
             elementId: null,
-            width: 100,
-            height: 100,
-            speed: 2,
-            cellsize: 10
+            width: 10,
+            height: 10,
+            speed: 1,
+            cellsize: 1
         });
-        console.log('gameOfLife:init', cf);
 
         let Game = new gameOfLifeCore(cf);
-
 
         // Visual
         if (cf.visual === true) {
@@ -126,7 +159,7 @@ const gameOfLife = {
             can.setReadDataHandler(() => Game.matrix.get());
         }
 
-        if(cf.autostart) {
+        if (cf.autostart) {
             Game.start();
         }
 
@@ -190,5 +223,4 @@ const gameOfLife = {
         return update;
     }
 };
-
-export default gameOfLife;
+module.exports = gameOfLife;

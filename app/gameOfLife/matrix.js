@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
 class Matrix {
     constructor(data) {
@@ -11,7 +11,7 @@ class Matrix {
     }
 
     cellByPos({x, y}) {
-        if (x && y) {
+        if (x >= 0 && y >= 0) {
             return this.matrixData[M.key({x, y})];
         }
     }
@@ -51,16 +51,18 @@ class Matrix {
      * @return {Array}
      */
     getSurroundingCells({x, y}) {
-        if (!x || !y) {
+        if (x <= 0 || y <= 0) {
             return false;
         }
         let cells = [];
-        cells.push(this.cellByPos({x: x, y: y - 1}));
-        cells.push(this.cellByPos({x: x - 1, y: y - 1}));
-        cells.push(this.cellByPos({x: x - 1, y: y}));
-        cells.push(this.cellByPos({x: x, y: y + 1}));
-        cells.push(this.cellByPos({x: x + 1, y: y + 1}));
-        cells.push(this.cellByPos({x: x + 1, y: y}));
+
+        for (let x2 = -1; x2 <= 1; x2 += 1) {
+            for (let y2 = -1; y2 <= 1; y2 += 1) {
+                if (!(x2 === 0 && y2 === 0)) {
+                    cells.push(this.cellByPos({x: x + x2, y: y + y2}));
+                }
+            }
+        }
         return cells.filter(it => _.isObject(it));
     }
 }
@@ -72,7 +74,7 @@ const M = {
      * @return {string}
      */
     key({x, y}) {
-        if (x && y) {
+        if (x >= 0 && y >= 0) {
             return x + 'X' + y;
         }
     },
@@ -81,9 +83,10 @@ const M = {
      *
      * @param cellsHorizontal
      * @param cellsVertical
+     * @param cellHandler function
      */
-    init(cellsHorizontal, cellsVertical) {
-        let cells = this.createCells(cellsHorizontal, cellsVertical);
+    init(cellsHorizontal, cellsVertical, cellHandler) {
+        let cells = this.createCells(cellsHorizontal, cellsVertical, cellHandler);
         return new Matrix(cells);
     },
 
@@ -106,13 +109,18 @@ const M = {
      *
      * @param w
      * @param h
+     * @param cellHandler
      * @return {Array}
      */
-    createCells(w, h) {
+    createCells(w, h, cellHandler) {
         let m = [];
         _.times(w, x => {
             _.times(h, y => {
-                m.push({x: x, y: y, a: Boolean(_.random(0, 1))});
+                let cell = {x: x, y: y};
+                if (cellHandler) {
+                    cell = cellHandler(cell);
+                }
+                m.push(cell);
             });
         });
         return m;
@@ -120,4 +128,4 @@ const M = {
 
 };
 
-export default M;
+module.exports = M;

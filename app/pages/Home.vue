@@ -8,11 +8,17 @@
     import _ from 'lodash';
     import Uikit from 'uikit';
     import UTILS from "../service/utils";
+    import MATRIX from "../gameOfLife/matrix";
     import Matrix from "../components/matrix";
 
     export default {
         name: 'home',
-        components: {Matrix}
+        components: {Matrix},
+        mounted() {
+            let ma = MATRIX.init(5, 5);
+
+            console.log(ma);
+        }
     }
 
 </script>
