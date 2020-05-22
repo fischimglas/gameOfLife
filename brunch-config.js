@@ -2,9 +2,8 @@ module.exports = {
     files: {
         javascripts: {
             joinTo: {
-                'vendor.js': /^(?!app|!gameOfLife)/,
-                'app.js': /^app/,
-                'gameOfLife.js': /^gameOfLife/
+                'vendor.js': /^(?!app)/,
+                'app.js': /^app|gameOfLife/,
             }
         },
         stylesheets: {

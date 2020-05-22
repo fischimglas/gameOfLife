@@ -2,7 +2,7 @@
   "name": "gameoflife",
   "description": "John Conways Game of Life, implemented in Javascript",
   "version": "0.0.2",
-  "main": "public/gameOfLife.js",
+  "main": "index.js",
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production"
