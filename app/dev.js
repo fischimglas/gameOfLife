@@ -1,5 +1,5 @@
-import M from "./gameOfLife/matrix";
-import G from "./gameOfLife/gameoflife";
+import M from "../gameOfLife/matrix";
+import G from "../gameOfLife/gameoflife";
 import _ from 'lodash';
 
 const DEV = {

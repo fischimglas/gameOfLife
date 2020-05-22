@@ -32,7 +32,7 @@
     import _ from 'lodash';
     import Uikit from 'uikit';
 
-    import gameOfLife from '../gameOfLife/gameoflife';
+    import gameOfLife from '../../gameOfLife/gameoflife';
 
     export default {
         name: 'matrix',

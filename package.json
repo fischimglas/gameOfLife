@@ -2,13 +2,13 @@
   "name": "gameoflife",
   "description": "John Conways Game of Life, implemented in Javascript",
   "version": "0.0.2",
-  "main": "dist/gameOfLife.js",
+  "main": "public/gameOfLife.js",
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production"
   },
   "author": {
-    "url": "http://tomquirk.com.au",
+    "url": "https://codenoise.ch",
     "name": "Jvo Maurer",
     "email": "jvo.maurer@gmail.com"
   },

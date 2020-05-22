@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const gMatrix = require('./app/gameOfLife/matrix');
+const gMatrix = require('./gameOfLife/matrix');
 
 
 let m = gMatrix.init(5, 5, function (cell) {

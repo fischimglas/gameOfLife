@@ -2,19 +2,15 @@ module.exports = {
     files: {
         javascripts: {
             joinTo: {
-                //'vendor.js': /^(?!app|!gameOfLife)/,
-                'vendor.js': /^(?!app)/,
-                'app.js': /^(app)/,
-                // './../dist/gameOfLife.js': /^gameOfLife/
+                'vendor.js': /^(?!app|!gameOfLife)/,
+                'app.js': /^app/,
+                'gameOfLife.js': /^gameOfLife/
             }
         },
         stylesheets: {
             joinTo: {
                 'app.css': /^app/
             }
-        },
-        templates: {
-            joinTo: 'app.js'
         }
     },
     plugins: {
