@@ -13,22 +13,21 @@ const instance = Factory.game({
 	color: null,
 });
 
-instance.apply([
-	{x: 25, y: 25, alive: true},
-	{x: 25, y: 26, alive: true},
-	{x: 25, y: 27, alive: true},
-	{x: 26, y: 25, alive: true},
-
-	{x: 22, y: 25, alive: true},
-	{x: 22, y: 26, alive: true},
-	{x: 22, y: 27, alive: true},
-
-	{x: 27, y: 25, alive: true},
-	{x: 27, y: 26, alive: true},
-	{x: 27, y: 27, alive: true},
-]);
-
 instance
+	.apply([
+		{x: 25, y: 25, alive: true},
+		{x: 25, y: 26, alive: true},
+		{x: 25, y: 27, alive: true},
+		{x: 26, y: 25, alive: true},
+
+		{x: 22, y: 25, alive: true},
+		{x: 22, y: 26, alive: true},
+		{x: 22, y: 27, alive: true},
+
+		{x: 27, y: 25, alive: true},
+		{x: 27, y: 26, alive: true},
+		{x: 27, y: 27, alive: true},
+	])
 	.on(CallbackEvent.tick, (game: GameOfLife): void => {
 		document.getElementById('pop').innerHTML = game.pop + '';
 		document.getElementById('cycle').innerHTML = game.cycle + '';

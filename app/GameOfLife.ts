@@ -65,34 +65,44 @@ export class gameOfLife implements GameOfLife {
 		Ui.init(this);
 	}
 
-	setDot(cell: Cell): void {
+	setDot(cell: Cell): GameOfLife {
 		this.matrix[Helper.name(cell)] = cell;
+
+		return this;
 	}
 
-	apply(cells: Cell[]): void {
+	apply(cells: Cell[]): GameOfLife {
 		cells.map((cell: Cell) => {
 			let item = this.matrix[Helper.name(cell)];
 			if (_.isObject(item)) {
 				this.matrix[Helper.name(cell)].alive = cell.alive === true
 			}
 		});
+
+		return this;
 	}
 
-	start(): void {
+	start(): GameOfLife {
 		this.isRunning = true;
 		runLoop(this);
+
+		return this;
 	}
 
-	stop(): void {
+	stop(): GameOfLife {
 		this.isRunning = false;
 		clearTimeout(timeout);
+
+		return this;
 	}
 
-	tick(): void {
+	tick(): GameOfLife {
 		tick(this);
+
+		return this;
 	}
 
-	setSpeed(speed: number | string): void {
+	setSpeed(speed: number | string): GameOfLife {
 		const isRunning = this.isRunning;
 		if (isRunning) {
 			this.stop();
@@ -102,6 +112,8 @@ export class gameOfLife implements GameOfLife {
 		if (isRunning) {
 			this.start();
 		}
+
+		return this;
 	}
 
 	on(name: CallbackEvent, callback: Function): GameOfLife {
