@@ -1,6 +1,7 @@
 .idea/
 .vscode/
-public/
 node_modules/
 npm-debug.log
 .vercel
+public/*.js
+public/*.map

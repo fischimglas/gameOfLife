@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preload" href="/vendor.js?t=22" as="script">
+    <link rel="preload" href="/app.js?t=22" as="script">
+</head>
+<body>
+<main id="app">
+
+    <div style="display: flex; ">
+        <div>
+            <canvas id="new-game-of-life" width="800" height="800" style="border:solid 1px black;"></canvas>
+        </div>
+        <div>
+            <ul>
+                <li>Population: <span id="pop"></span></li>
+                <li>Cycle: <span id="cycle"></span></li>
+                <li><span id="status"></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <canvas id="game-of-life" width="800" height="800"></canvas>
+
+    <div>
+        <button class="action" data-action="start">Start</button>
+        <button class="action" data-action="stop">Stop</button>
+        <button class="action" data-action="tick">Tick</button>
+        <div>
+            <label>Speed</label>
+            <input type="range" min="0" max="1000" class="control" data-action="speed">
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="/vendor.js?t=22"></script>
+<script type="text/javascript" src="/app.js?t=22"></script>
+<script type="text/javascript">
+	require('main');
+</script>
+</body>
+</html>
