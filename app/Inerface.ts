@@ -64,3 +64,15 @@ export enum CallbackEvent {
 	click = 'click',
 	hover = 'hover',
 }
+
+export enum GameCfElement {
+	width = 'width',
+	height = 'height',
+	color = 'color',
+	radius = 'radius',
+	gutter = 'gutter',
+	speed = 'speed',
+	container = 'container',
+	colorCellDead = 'colorCellDead',
+	colorFactory = 'colorFactory',
+}

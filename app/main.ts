@@ -1,6 +1,6 @@
 'use strict';
 
-import {CallbackEvent, Cell, GameOfLife} from './Inerface';
+import {CallbackEvent, Cell, GameCfElement, GameOfLife} from './Inerface';
 import {gameOfLife} from "./GameOfLife";
 import {Factory} from "./Factory";
 
@@ -46,9 +46,7 @@ instance
 		cell.alive = true;
 		cell.color = Factory.color(0);
 	})
-
-instance.setCf('colorFactory', () => {
-	return instance.pop > 100 ? 'red' : 'green';
-})
-
-instance.start();
+	.setCf(GameCfElement.colorFactory, (): string => {
+		return instance.pop > 100 ? 'red' : 'green';
+	})
+	.start();
