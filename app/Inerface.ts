@@ -13,6 +13,7 @@ export interface gameCf {
 	height: number,
 	color: string,
 	radius: number,
+	gutter: number,
 	speed: number,
 	container: string,
 }
@@ -44,5 +45,7 @@ export interface Callback {
 export enum CallbackEvent {
 	tick = 'tick',
 	extinct = 'extinct',
-	stalled = 'stalled'
+	stalled = 'stalled',
+	click = 'click',
+	hover = 'hover',
 }

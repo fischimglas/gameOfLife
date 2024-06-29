@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Cell, gameCf, GameOfLife} from "./Inerface";
+import {Callback, CallbackEvent, Cell, Coordinate, gameCf, GameOfLife} from "./Inerface";
 import * as _ from "lodash";
 import {gameOfLife} from "./GameOfLife";
 import {Helper} from "./Helper";
@@ -13,6 +13,12 @@ export const Factory = {
 			y,
 			alive,
 			color: color ? color : Helper.color(0),
+		}
+	},
+	coordinate(x: number = 0, y: number = 0): Coordinate {
+		return {
+			x,
+			y
 		}
 	},
 	game(cf: gameCf): GameOfLife {

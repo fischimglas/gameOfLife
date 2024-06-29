@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Cell, GameOfLife, gameCf, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, gameCf, GameOfLife, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import * as _ from "lodash";
@@ -6,22 +6,15 @@ import {Ui} from "./Ui";
 
 let timeout = null;
 
-function triggerCallbacks(name: CallbackEvent, game: GameOfLife): void {
-	game.callbacks.map((it: Callback) => {
-		if (name === it.name) {
-			it.callback(game);
-		}
-	})
-}
 
 function tick(game: GameOfLife): void {
-	triggerCallbacks(CallbackEvent.tick, game);
+	Helper.triggerCallbacks(CallbackEvent.tick, game);
 
 	const color = Helper.color(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
 	if (changes.length === 0) {
-		triggerCallbacks(CallbackEvent.stalled, game);
+		Helper.triggerCallbacks(CallbackEvent.stalled, game);
 
 		game.stop();
 	}
@@ -38,7 +31,7 @@ function tick(game: GameOfLife): void {
 	game.pop = Helper.population(game.matrix);
 
 	if (game.pop === 0) {
-		triggerCallbacks(CallbackEvent.extinct, game);
+		Helper.triggerCallbacks(CallbackEvent.extinct, game);
 		game.stop();
 	}
 
@@ -111,8 +104,10 @@ export class gameOfLife implements GameOfLife {
 		}
 	}
 
-	on(name: CallbackEvent, callback: Function) {
+	on(name: CallbackEvent, callback: Function): GameOfLife {
 		this.callbacks.push(Factory.callback(name, callback));
+
+		return this;
 	}
 
 }

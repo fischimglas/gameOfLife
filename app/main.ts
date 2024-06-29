@@ -1,15 +1,16 @@
 'use strict';
 
 import {Factory} from './Factory';
-import {CallbackEvent, GameOfLife} from './Inerface';
+import {CallbackEvent, Cell, GameOfLife} from './Inerface';
 
 const instance = Factory.game({
-	speed: 200,
-	radius: 2,
-	width: 200,
-	height: 200,
+	speed: 50,
+	radius: 3,
+	gutter: 2,
+	width: 550,
+	height: 550,
 	container: 'new-game-of-life',
-	color: null
+	color: null,
 });
 
 instance.apply([
@@ -27,15 +28,22 @@ instance.apply([
 	{x: 27, y: 27, alive: true},
 ]);
 
-instance.on(CallbackEvent.tick, (game: GameOfLife): void => {
-	document.getElementById('pop').innerHTML = game.pop + '';
-	document.getElementById('cycle').innerHTML = game.cycle + '';
-})
-instance.on(CallbackEvent.extinct, (game: GameOfLife): void => {
-	document.getElementById('status').innerHTML = 'Your population has died out';
-})
-instance.on(CallbackEvent.stalled, (game: GameOfLife): void => {
-	document.getElementById('status').innerHTML = 'Your population has died out';
-})
+instance
+	.on(CallbackEvent.tick, (game: GameOfLife): void => {
+		document.getElementById('pop').innerHTML = game.pop + '';
+		document.getElementById('cycle').innerHTML = game.cycle + '';
+	})
+	.on(CallbackEvent.extinct, (game: GameOfLife): void => {
+		document.getElementById('status').innerHTML = 'Your population has died out';
+	})
+	.on(CallbackEvent.stalled, (game: GameOfLife): void => {
+		document.getElementById('status').innerHTML = 'Your population is in a deadlock';
+	})
+	.on(CallbackEvent.click, (game: GameOfLife, cell: Cell): void => {
+		cell.alive = true;
+	})
+	.on(CallbackEvent.hover, (game: GameOfLife, cell: Cell): void => {
+		cell.alive = true;
+	})
 
-instance.start();
+//instance.start();

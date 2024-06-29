@@ -1,8 +1,8 @@
-import {Cell, Coordinate, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, Coordinate, gameCf, GameOfLife, Matrix} from "./Inerface";
 import * as _ from "lodash";
 import {Factory} from "./Factory";
 
-const colors = [
+const colorsSource = [
 	'#440154',
 	'#481467',
 	'#482576',
@@ -24,6 +24,8 @@ const colors = [
 	'#dde318',
 	'#fde725'
 ];
+const colors = colorsSource.concat(colorsSource.slice().reverse());
+
 let colorIndex = 0;
 
 
@@ -35,7 +37,6 @@ function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 	const siblings = Helper.siblings(matrix, cell);
 	const numAlive = siblings.filter((it: Cell) => it.alive === true).length;
 
-	// GameOfLife of life rules
 	// #1 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 	if (2 > numAlive) {
 		isAliveNow = false;
@@ -89,4 +90,36 @@ export const Helper = {
 	calcChanges(matrix: Matrix): Cell[] {
 		return _.filter(_.values(matrix).map((cell: Cell) => gameOfLifeRules(matrix, cell)));
 	},
+	getCellByCoord(game: GameOfLife, coordinate: Coordinate): Cell {
+		return game.matrix[this.name(coordinate)];
+	},
+	cellByPos(game: GameOfLife, clickPos: Coordinate): Cell {
+		const R = game.cf.radius;
+		const G = game.cf.gutter;
+
+		const x = Math.round((clickPos.x - R) / (R * 2 + G));
+		const y = Math.round((clickPos.y - R) / (R * 2 + G));
+
+		return this.getCellByCoord(game, Factory.coordinate(x, y));
+	},
+	calcPosByCoord(cf: gameCf, coordinate: Coordinate): Coordinate {
+		const R = cf.radius;
+		const G = cf.gutter;
+
+		const x = coordinate.x * R * 2 + coordinate.x * G + R;
+		const y = coordinate.y * R * 2 + coordinate.y * G + R;
+
+		return Factory.coordinate(x, y);
+	},
+	triggerCallbacks(name: CallbackEvent, game: GameOfLife, data: any = null): void {
+		game.callbacks.map((it: Callback) => {
+			if (name === it.name) {
+				it.callback(game, data);
+			}
+		})
+	},
+	getMouseInContainerCoordinates(container: HTMLElement, e: MouseEvent): Coordinate {
+		const pos = container.getBoundingClientRect();
+		return Factory.coordinate(e.clientX - pos.left, e.clientY - pos.top);
+	}
 }

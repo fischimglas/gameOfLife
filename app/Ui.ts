@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {Cell, GameOfLife, gameCf, Matrix} from "./Inerface";
+import {CallbackEvent, Cell, gameCf, GameOfLife, Matrix} from "./Inerface";
 import {Helper} from "./Helper";
 import {Factory} from "./Factory";
 
@@ -9,7 +9,7 @@ export const Ui = {
 		Factory.createMatrix(game.cf)
 			.forEach((cell: Cell) => game.setDot(cell));
 
-		window.requestAnimationFrame(() => Ui.draw(game.cf, game.matrix));
+		Ui.draw(game.cf, game.matrix);
 
 		_.each(document.getElementsByClassName('action'), (control: HTMLElement) => {
 			control.addEventListener('click', () => this.callAction(game, control.getAttribute('data-action')));
@@ -18,21 +18,59 @@ export const Ui = {
 		_.each(document.getElementsByClassName('control'), (control: HTMLInputElement) => {
 			control.addEventListener('change', () => this.callAction(game, control.getAttribute('data-action'), control.value));
 		});
-	},
-	draw(cf: gameCf, matrix: Matrix): void {
-		const elem = <HTMLCanvasElement>document.getElementById(cf.container);
-		const context = elem.getContext('2d');
-		const dots = _.values(matrix);
-		context.clearRect(0, 0, elem.width, elem.height);
-		dots.forEach((dot: Cell) => {
-			context.fillStyle = dot.alive === true ? dot.color : '#eee';
-			context.beginPath();
-			context.arc(dot.x * cf.radius * 2 + dot.x + cf.radius, dot.y * cf.radius * 2 + dot.y + cf.radius, cf.radius, 0, 2 * Math.PI);
-			context.fill();
+
+		const priv = {
+			container: <HTMLCanvasElement>document.getElementById(game.cf.container),
+			mouseDown: <boolean>false,
+		}
+
+		priv.container.addEventListener('click', e => {
+			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
+			const cell = Helper.cellByPos(game, coordinate);
+
+			Helper.triggerCallbacks(CallbackEvent.click, game, cell);
+
+			this.draw(game.cf, game.matrix);
 		});
 
-		context.fillText(Helper.population(dots) + '', 10, 100);
-		context.save();
+
+		priv.container.addEventListener('mousedown', e => {
+			priv.mouseDown = true;
+		});
+		priv.container.addEventListener('mouseup', e => {
+			priv.mouseDown = false;
+		});
+		priv.container.addEventListener('mousemove', e => {
+			if (priv.mouseDown !== true) {
+				return;
+			}
+			console.log('trigger move');
+			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
+			const cell = Helper.cellByPos(game, coordinate);
+			Helper.triggerCallbacks(CallbackEvent.hover, game, cell);
+
+			this.draw(game.cf, game.matrix);
+		});
+	},
+	draw(cf: gameCf, matrix: Matrix): void {
+		window.requestAnimationFrame(() => {
+			const elem = <HTMLCanvasElement>document.getElementById(cf.container);
+			const context = elem.getContext('2d');
+			const dots = _.values(matrix);
+			context.clearRect(0, 0, elem.width, elem.height);
+			dots.forEach((dot: Cell) => {
+				context.fillStyle = dot.alive === true ? dot.color : '#eee';
+				context.beginPath();
+
+				const pos = Helper.calcPosByCoord(cf, dot);
+
+				context.arc(pos.x, pos.y, cf.radius, 0, 2 * Math.PI);
+				context.fill();
+			});
+
+			context.save();
+		});
+
 	},
 	callAction(game: GameOfLife, actionName: string, value?: string | number): void {
 		if (_.isFunction(game[actionName])) {
