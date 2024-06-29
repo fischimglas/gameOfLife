@@ -4,7 +4,6 @@ import {Factory} from './Factory';
 import {CallbackEvent, Cell, GameOfLife} from './Inerface';
 
 const instance = Factory.game({
-	radius: 3,
 	container: 'new-game-of-life',
 });
 

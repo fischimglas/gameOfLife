@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Cell, gameCf, GameOfLife, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, GameCf, GameOfLife, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import {Ui} from "./Ui";
@@ -6,7 +6,7 @@ import {Ui} from "./Ui";
 let timeout = null;
 
 function tick(game: GameOfLife): void {
-	const color = Helper.color(game.cycle);
+	const color = Factory.color(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
 	changes.map((it: Cell): void => {
@@ -46,7 +46,7 @@ function runLoop(game: GameOfLife): void {
 }
 
 export class gameOfLife implements GameOfLife {
-	cf: gameCf = null
+	cf: GameCf = null
 	matrix: Matrix = {}
 	cycle: number = 0
 	isRunning: boolean = false
@@ -54,7 +54,7 @@ export class gameOfLife implements GameOfLife {
 	callbacks: Callback[] = [];
 	actions: object = {};
 
-	constructor(cf: gameCf) {
+	constructor(cf: GameCf) {
 		this.cf = cf
 
 		Ui.init(this);

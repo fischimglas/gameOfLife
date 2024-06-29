@@ -1,33 +1,6 @@
-import {Callback, CallbackEvent, Cell, Coordinate, gameCf, GameOfLife, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameOfLife, Matrix} from "./Inerface";
 import * as _ from "lodash";
 import {Factory} from "./Factory";
-
-const colorsSource = [
-	'#440154',
-	'#481467',
-	'#482576',
-	'#453781',
-	'#404688',
-	'#39558c',
-	'#33638d',
-	'#2d718e',
-	'#287d8e',
-	'#238a8d',
-	'#1f968b',
-	'#20a386',
-	'#29af7f',
-	'#3dbc74',
-	'#56c667',
-	'#75d054',
-	'#95d840',
-	'#bade28',
-	'#dde318',
-	'#fde725'
-];
-const colors = colorsSource.concat(colorsSource.slice().reverse());
-
-let colorIndex = 0;
-
 
 function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 	const isAlive = (cell.alive === true);
@@ -61,17 +34,6 @@ export const Helper = {
 	name(cell: Coordinate): string {
 		return cell.x + 'X' + cell.y;
 	},
-	color(cycle: number): string {
-
-		if (cycle !== 0 && cycle % 30 === 0) {
-			colorIndex += 1;
-			if (colors.length <= colorIndex) {
-				colorIndex = 0;
-			}
-		}
-
-		return colors[colorIndex];
-	},
 	population(matrix: Matrix): number {
 		return _.values(matrix).filter((it: Cell) => it.alive === true).length;
 	},
@@ -103,7 +65,7 @@ export const Helper = {
 
 		return this.getCellByCoord(game, Factory.coordinate(x, y));
 	},
-	calcPosByCoord(cf: gameCf, coordinate: Coordinate): Coordinate {
+	calcPosByCoord(cf: GameCf, coordinate: Coordinate): Coordinate {
 		const R = cf.radius;
 		const G = cf.gutter;
 

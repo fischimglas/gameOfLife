@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {CallbackEvent, Cell, gameCf, GameOfLife, Matrix} from "./Inerface";
+import {CallbackEvent, Cell, GameCf, GameOfLife, Matrix} from "./Inerface";
 import {Helper} from "./Helper";
 import {Factory} from "./Factory";
 
@@ -56,7 +56,7 @@ export const Ui = {
 			this.draw(game.cf, game.matrix);
 		});
 	},
-	draw(cf: gameCf, matrix: Matrix): void {
+	draw(cf: GameCf, matrix: Matrix): void {
 		window.requestAnimationFrame(() => {
 			const elem = <HTMLCanvasElement>document.getElementById(cf.container);
 			const context = elem.getContext('2d');

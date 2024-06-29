@@ -8,7 +8,7 @@ export interface Coordinate {
 	y: number,
 }
 
-export interface gameCf {
+export interface GameCf {
 	width: number,
 	height: number,
 	color: string,
@@ -19,8 +19,19 @@ export interface gameCf {
 	colorCellDead: string,
 }
 
+export interface GameInitCf {
+	width?: number | string,
+	height?: number | string,
+	color?: string,
+	radius?: number,
+	gutter?: number,
+	speed?: number,
+	container: string,
+	colorCellDead?: string,
+}
+
 export interface GameOfLife {
-	cf: gameCf,
+	cf: GameCf,
 	pop: number,
 	cycle: number,
 	isRunning: boolean,
