@@ -65,7 +65,7 @@ export enum CallbackEvent {
 	hover = 'hover',
 }
 
-export enum GameCfElement {
+export enum CfElement {
 	width = 'width',
 	height = 'height',
 	color = 'color',
