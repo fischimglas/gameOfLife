@@ -59,13 +59,13 @@ export const Ui = {
 		window.requestAnimationFrame((): void => {
 			const elem = <HTMLCanvasElement>document.getElementById(cf.container);
 			const context = elem.getContext('2d');
-			const dots = Object.values(matrix);
+			const cells = Object.values(matrix);
 			context.clearRect(0, 0, elem.width, elem.height);
-			dots.forEach((dot: Cell): void => {
-				context.fillStyle = dot.alive === true ? dot.color : cf.colorCellDead;
+			cells.forEach((cell: Cell): void => {
+				context.fillStyle = cell.alive === true ? cell.color : cf.colorCellDead;
 				context.beginPath();
 
-				const pos = Helper.calcPosByCoord(cf, dot);
+				const pos = Helper.calcPosByCoord(cf, cell);
 
 				context.arc(pos.x, pos.y, cf.radius, 0, 2 * Math.PI);
 				context.fill();
