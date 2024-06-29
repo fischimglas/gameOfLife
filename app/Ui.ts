@@ -44,6 +44,7 @@ export const Ui = {
 			if (priv.mouseDown !== true) {
 				return;
 			}
+
 			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
 			const cell = Helper.cellByPos(game, coordinate);
 			if (typeof cell !== 'object') {

@@ -2,9 +2,12 @@
 
 import {CallbackEvent, Cell, GameOfLife} from './Inerface';
 import {gameOfLife} from "./GameOfLife";
+import {Factory} from "./Factory";
 
 const instance = new gameOfLife({
 	container: 'new-game-of-life',
+	radius: 4,
+	gutter: 2
 });
 
 instance
@@ -41,6 +44,7 @@ instance
 	})
 	.on(CallbackEvent.hover, (game: GameOfLife, cell: Cell): void => {
 		cell.alive = true;
+		cell.color = Factory.color(0);
 	})
 
 instance.start();

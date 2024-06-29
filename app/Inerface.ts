@@ -40,6 +40,7 @@ export interface GameOfLife {
 	actions: object,
 	start: Function,
 	stop: Function
+	reset: Function
 	apply: Function
 	setDot: Function
 	on: Function

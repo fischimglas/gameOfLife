@@ -103,6 +103,17 @@ export class gameOfLife implements GameOfLife {
 		return this;
 	}
 
+	reset(): GameOfLife {
+		this.cycle = 0;
+		Object.values(this.matrix).forEach(it => {
+			it.alive = false;
+			it.color = this.cf.colorCellDead;
+		});
+		Ui.draw(this.cf, this.matrix);
+
+		return this;
+	}
+
 	setSpeed(speed: number | string): GameOfLife {
 		const isRunning = this.isRunning;
 		if (isRunning) {

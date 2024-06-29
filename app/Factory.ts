@@ -11,18 +11,15 @@ const defaultGameCf = {
 	colorCellDead: '#eeeeee',
 };
 
-
-const colorsSource = [
+const colors = [
 	'#440154',
-	'#481467',
-	'#482576',
-	'#453781',
 	'#404688',
 	'#39558c',
 	'#33638d',
 	'#2d718e',
 	'#287d8e',
 	'#238a8d',
+	'#1f968b',
 	'#1f968b',
 	'#20a386',
 	'#29af7f',
@@ -32,9 +29,18 @@ const colorsSource = [
 	'#95d840',
 	'#bade28',
 	'#dde318',
-	'#fde725'
+	'#fde725',
+	'#ffc168',
+	'#ff8b68',
+	'#e45f5e',
+	'#dc4c59',
+	'#d33b67',
+	'#c72e79',
+	'#b9207f',
+	'#a91484',
+	'#960578',
+	'#840271',
 ];
-const colors = colorsSource.concat(colorsSource.slice().reverse());
 
 let colorIndex = 0;
 
