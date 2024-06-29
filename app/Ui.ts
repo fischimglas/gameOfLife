@@ -15,12 +15,12 @@ export const Ui = {
 			control.addEventListener('click', () => this.callAction(game, control.getAttribute('data-action')));
 		});
 
-		_.each(document.getElementsByClassName('control'), (control: HTMLElement) => {
+		_.each(document.getElementsByClassName('control'), (control: HTMLInputElement) => {
 			control.addEventListener('change', () => this.callAction(game, control.getAttribute('data-action'), control.value));
 		});
 	},
 	draw(cf: gameCf, matrix: Matrix): void {
-		const elem = document.getElementById(cf.container);
+		const elem = <HTMLCanvasElement>document.getElementById(cf.container);
 		const context = elem.getContext('2d');
 		const dots = _.values(matrix);
 		context.clearRect(0, 0, elem.width, elem.height);
@@ -31,13 +31,10 @@ export const Ui = {
 			context.fill();
 		});
 
-		context.fillText(Helper.population(dots), 10, 100);
+		context.fillText(Helper.population(dots) + '', 10, 100);
 		context.save();
 	},
-
 	callAction(game: Game, actionName: string, value?: string | number): void {
-		console.log('call action', actionName, value);
-		
 		if (_.isFunction(game[actionName])) {
 			game[actionName](value);
 		}
