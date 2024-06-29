@@ -16,14 +16,6 @@ instance
 		{x: 1, y: 6, alive: true},
 		{x: 1, y: 7, alive: true},
 		{x: 2, y: 5, alive: true},
-
-		{x: 22, y: 25, alive: true},
-		{x: 22, y: 26, alive: true},
-		{x: 22, y: 27, alive: true},
-
-		{x: 27, y: 25, alive: true},
-		{x: 27, y: 26, alive: true},
-		{x: 27, y: 27, alive: true},
 	])
 	.on(CallbackEvent.tick, (game: GameOfLife): void => {
 		document.getElementById('pop').innerHTML = game.population() + '';
