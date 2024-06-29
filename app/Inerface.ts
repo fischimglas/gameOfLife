@@ -17,7 +17,7 @@ export interface gameCf {
 	container: string,
 }
 
-export interface Game {
+export interface GameOfLife {
 	cf: gameCf,
 	pop: number,
 	cycle: number,

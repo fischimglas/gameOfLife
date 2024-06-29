@@ -1,11 +1,11 @@
 import * as _ from "lodash";
-import {Dot, Game, gameCf, Matrix} from "./Inerface";
+import {Dot, GameOfLife, gameCf, Matrix} from "./Inerface";
 import {Helper} from "./Helper";
 import {Factory} from "./Factory";
 
 
 export const Ui = {
-	init(game: Game): void {
+	init(game: GameOfLife): void {
 		Factory.createMatrix(game.cf)
 			.forEach((dot: Dot) => game.setDot(dot));
 
@@ -34,7 +34,7 @@ export const Ui = {
 		context.fillText(Helper.population(dots) + '', 10, 100);
 		context.save();
 	},
-	callAction(game: Game, actionName: string, value?: string | number): void {
+	callAction(game: GameOfLife, actionName: string, value?: string | number): void {
 		if (_.isFunction(game[actionName])) {
 			game[actionName](value);
 		}

@@ -35,7 +35,7 @@ function gameOfLifeRules(matrix: Matrix, dot: Dot): Dot {
 	const siblings = Helper.siblings(matrix, dot);
 	const numAlive = siblings.filter((it: Dot) => it.alive === true).length;
 
-	// Game of life rules
+	// GameOfLife of life rules
 	// #1 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 	if (2 > numAlive) {
 		isAliveNow = false;

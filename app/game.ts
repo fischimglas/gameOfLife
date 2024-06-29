@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Dot, Game, gameCf, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Dot, GameOfLife, gameCf, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import * as _ from "lodash";
@@ -6,7 +6,7 @@ import {Ui} from "./Ui";
 
 let timeout = null;
 
-function triggerCallbacks(name: CallbackEvent, game: Game): void {
+function triggerCallbacks(name: CallbackEvent, game: GameOfLife): void {
 	game.callbacks.map((it: Callback) => {
 		if (name === it.name) {
 			it.callback(game);
@@ -14,7 +14,7 @@ function triggerCallbacks(name: CallbackEvent, game: Game): void {
 	})
 }
 
-function tick(game: Game): void {
+function tick(game: GameOfLife): void {
 	triggerCallbacks(CallbackEvent.tick, game);
 
 	const color = Helper.color(game.cycle);
@@ -46,7 +46,7 @@ function tick(game: Game): void {
 }
 
 
-function runLoop(game: Game): void {
+function runLoop(game: GameOfLife): void {
 	tick(game);
 
 	timeout = setTimeout(() => {
@@ -57,7 +57,7 @@ function runLoop(game: Game): void {
 	}, 10000 / game.cf.speed);
 }
 
-export class game implements Game {
+export class game implements GameOfLife {
 	cf: gameCf = null
 	matrix: Matrix = {}
 	cycle: number = 0

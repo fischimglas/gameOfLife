@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Dot, Game, gameCf} from "./Inerface";
+import {Callback, CallbackEvent, Dot, GameOfLife, gameCf} from "./Inerface";
 import * as _ from "lodash";
 import {game} from "./game";
 import {Helper} from "./Helper";
@@ -15,7 +15,7 @@ export const Factory = {
 			color: color ? color : Helper.color(0),
 		}
 	},
-	game(cf: gameCf): Game {
+	game(cf: gameCf): GameOfLife {
 		return new game(cf);
 	},
 	callback(name: CallbackEvent, callback: Function): Callback {
