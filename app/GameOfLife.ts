@@ -42,7 +42,7 @@ function runLoop(game: GameOfLife): void {
 			return;
 		}
 		runLoop(game);
-	}, 10000 / game.cf.speed);
+	}, game.cf.speed);
 }
 
 export class gameOfLife implements GameOfLife {
@@ -107,8 +107,9 @@ export class gameOfLife implements GameOfLife {
 		if (isRunning) {
 			this.stop();
 		}
-
-		this.cf.speed = parseInt(speed + '');
+		const input = Math.max(1, parseInt(speed + ''));
+		this.cf.speed = Math.round(10000 / input);
+		
 		if (isRunning) {
 			this.start();
 		}

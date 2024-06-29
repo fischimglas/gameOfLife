@@ -27,7 +27,8 @@
                 <button class="action" data-action="tick">Tick</button>
                 <div>
                     <label>Speed</label>
-                    <input type="range" min="0" max="1000" class="control" data-action="setSpeed" id="test">
+                    <input type="range" min="1" max="100" class="control" data-action="setSpeed" oninput="this.nextElementSibling.value = this.value">
+                    <output></output>
                 </div>
             </div>
         </div>
