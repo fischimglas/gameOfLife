@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Dot, GameOfLife, gameCf, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, GameOfLife, gameCf, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import * as _ from "lodash";
@@ -25,7 +25,7 @@ function tick(game: GameOfLife): void {
 
 		game.stop();
 	}
-	changes.map((it: Dot): void => {
+	changes.map((it: Cell): void => {
 		const name = Helper.name(it);
 		if (game.matrix[name].alive !== true && it.alive === true) {
 			game.matrix[name].color = color;
@@ -57,7 +57,7 @@ function runLoop(game: GameOfLife): void {
 	}, 10000 / game.cf.speed);
 }
 
-export class game implements GameOfLife {
+export class gameOfLife implements GameOfLife {
 	cf: gameCf = null
 	matrix: Matrix = {}
 	cycle: number = 0
@@ -72,15 +72,15 @@ export class game implements GameOfLife {
 		Ui.init(this);
 	}
 
-	setDot(dot: Dot): void {
-		this.matrix[Helper.name(dot)] = dot;
+	setDot(cell: Cell): void {
+		this.matrix[Helper.name(cell)] = cell;
 	}
 
-	apply(dots: Dot[]): void {
-		dots.map((dot: Dot) => {
-			let item = this.matrix[Helper.name(dot)];
+	apply(cells: Cell[]): void {
+		cells.map((cell: Cell) => {
+			let item = this.matrix[Helper.name(cell)];
 			if (_.isObject(item)) {
-				this.matrix[Helper.name(dot)].alive = dot.alive === true
+				this.matrix[Helper.name(cell)].alive = cell.alive === true
 			}
 		});
 	}

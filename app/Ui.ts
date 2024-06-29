@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {Dot, GameOfLife, gameCf, Matrix} from "./Inerface";
+import {Cell, GameOfLife, gameCf, Matrix} from "./Inerface";
 import {Helper} from "./Helper";
 import {Factory} from "./Factory";
 
@@ -7,7 +7,7 @@ import {Factory} from "./Factory";
 export const Ui = {
 	init(game: GameOfLife): void {
 		Factory.createMatrix(game.cf)
-			.forEach((dot: Dot) => game.setDot(dot));
+			.forEach((cell: Cell) => game.setDot(cell));
 
 		window.requestAnimationFrame(() => Ui.draw(game.cf, game.matrix));
 
@@ -24,7 +24,7 @@ export const Ui = {
 		const context = elem.getContext('2d');
 		const dots = _.values(matrix);
 		context.clearRect(0, 0, elem.width, elem.height);
-		dots.forEach((dot: Dot) => {
+		dots.forEach((dot: Cell) => {
 			context.fillStyle = dot.alive === true ? dot.color : '#eee';
 			context.beginPath();
 			context.arc(dot.x * cf.radius * 2 + dot.x + cf.radius, dot.y * cf.radius * 2 + dot.y + cf.radius, cf.radius, 0, 2 * Math.PI);

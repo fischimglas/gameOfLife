@@ -1,4 +1,4 @@
-export interface Dot extends Coordinate {
+export interface Cell extends Coordinate {
 	alive: boolean,
 	color: string
 }

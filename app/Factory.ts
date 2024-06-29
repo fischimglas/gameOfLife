@@ -1,13 +1,13 @@
-import {Callback, CallbackEvent, Dot, GameOfLife, gameCf} from "./Inerface";
+import {Callback, CallbackEvent, Cell, gameCf, GameOfLife} from "./Inerface";
 import * as _ from "lodash";
-import {game} from "./game";
+import {gameOfLife} from "./GameOfLife";
 import {Helper} from "./Helper";
 
 export const Factory = {
-	createMatrix(state: gameCf): Dot[] {
-		return _.flatten(_.range(0, state.width).map((x: number) => _.range(0, state.height).map((y: number) => (this.dot(x, y, state.color)))));
+	createMatrix(state: gameCf): Cell[] {
+		return _.flatten(_.range(0, state.width).map((x: number) => _.range(0, state.height).map((y: number) => (this.cell(x, y, state.color)))));
 	},
-	dot(x: number = 0, y: number = 0, color: string = null, alive: boolean = false): Dot {
+	cell(x: number = 0, y: number = 0, color: string = null, alive: boolean = false): Cell {
 		return {
 			x,
 			y,
@@ -16,7 +16,7 @@ export const Factory = {
 		}
 	},
 	game(cf: gameCf): GameOfLife {
-		return new game(cf);
+		return new gameOfLife(cf);
 	},
 	callback(name: CallbackEvent, callback: Function): Callback {
 		return {name, callback};
