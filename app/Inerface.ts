@@ -17,6 +17,7 @@ export interface GameCf {
 	speed: number,
 	container: string,
 	colorCellDead: string,
+	colorFactory: Function,
 }
 
 export interface GameInitCf {
@@ -42,7 +43,8 @@ export interface GameOfLife {
 	stop: Function
 	reset: Function
 	apply: Function
-	setDot: Function
+	setCell: Function
+	setCf: Function
 	on: Function
 }
 

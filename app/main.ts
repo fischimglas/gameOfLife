@@ -47,4 +47,8 @@ instance
 		cell.color = Factory.color(0);
 	})
 
+instance.setCf('colorFactory', () => {
+	return instance.pop > 100 ? 'red' : 'green';
+})
+
 instance.start();

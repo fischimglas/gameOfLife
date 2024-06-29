@@ -5,7 +5,7 @@ import {Factory} from "./Factory";
 export const Ui = {
 	init(game: GameOfLife): void {
 		Factory.createMatrix(game.cf)
-			.forEach((cell: Cell) => game.setDot(cell));
+			.forEach((cell: Cell) => game.setCell(cell));
 
 		Ui.draw(game.cf, game.matrix);
 

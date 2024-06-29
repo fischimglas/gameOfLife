@@ -6,7 +6,7 @@ import {Ui} from "./Ui";
 let timeout = null;
 
 function tick(game: GameOfLife): void {
-	const color = Factory.color(game.cycle);
+	const color = game.cf.colorFactory(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
 	changes.map((it: Cell): void => {
@@ -60,8 +60,18 @@ export class gameOfLife implements GameOfLife {
 		Ui.init(this);
 	}
 
-	setDot(cell: Cell): GameOfLife {
+	setCell(cell: Cell): GameOfLife {
 		this.matrix[Helper.name(cell)] = cell;
+
+		return this;
+	}
+
+	setCf(name: string | GameCf, value: any): GameOfLife {
+		if (typeof name === 'object') {
+			this.cf = name;
+		} else {
+			this.cf[name] = value;
+		}
 
 		return this;
 	}

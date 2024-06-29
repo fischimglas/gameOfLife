@@ -1,15 +1,5 @@
-import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameInitCf, GameOfLife} from "./Inerface";
-import {gameOfLife} from "./GameOfLife";
+import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameInitCf} from "./Inerface";
 import {Helper} from "./Helper";
-
-const defaultGameCf = {
-	speed: 50,
-	radius: 15,
-	gutter: 5,
-	container: 'new-game-of-life',
-	color: null,
-	colorCellDead: '#eeeeee',
-};
 
 const colors = [
 	'#440154',
@@ -44,17 +34,30 @@ const colors = [
 
 let colorIndex = 0;
 
+function colorFactory(cycle: number = 0): string {
+	if (cycle !== 0 && cycle % 30 === 0) {
+		colorIndex += 1;
+		if (colors.length <= colorIndex) {
+			colorIndex = 0;
+		}
+	}
+
+	return colors[colorIndex];
+}
+
+const defaultGameCf = {
+	speed: 50,
+	radius: 15,
+	gutter: 5,
+	container: 'new-game-of-life',
+	color: null,
+	colorCellDead: '#eeeeee',
+	colorFactory: colorFactory
+};
+
 export const Factory = {
 	color(cycle: number = 0): string {
-
-		if (cycle !== 0 && cycle % 30 === 0) {
-			colorIndex += 1;
-			if (colors.length <= colorIndex) {
-				colorIndex = 0;
-			}
-		}
-
-		return colors[colorIndex];
+		return colorFactory(cycle);
 	},
 	createMatrix(cf: GameCf): Cell[] {
 		const elementWidth = cf.radius * 2 + cf.gutter
@@ -67,17 +70,6 @@ export const Factory = {
 	},
 	coordinate(x: number = 0, y: number = 0): Coordinate {
 		return {x, y}
-	},
-	game(cf: GameInitCf): GameOfLife {
-		const container = document.getElementById(cf.container);
-		if (!cf.width || cf.width === 'auto') {
-			cf.width = container.clientWidth;
-		}
-		if (!cf.height || cf.height === 'auto') {
-			cf.height = container.clientHeight;
-		}
-
-		return new gameOfLife(Factory.gameCf(cf));
 	},
 	gameCf(cf: GameInitCf): GameCf {
 		const container = document.getElementById(cf.container);
