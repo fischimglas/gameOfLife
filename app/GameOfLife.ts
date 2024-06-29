@@ -5,16 +5,10 @@ import {Ui} from "./Ui";
 
 let timeout = null;
 
-
 function tick(game: GameOfLife): void {
-	Helper.triggerCallbacks(CallbackEvent.tick, game);
-
 	const color = Helper.color(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
-	if (changes.length === 0) {
-		Helper.triggerCallbacks(CallbackEvent.stalled, game);
-	}
 	changes.map((it: Cell): void => {
 		const name = Helper.name(it);
 		if (game.matrix[name].alive !== true && it.alive === true) {
@@ -27,6 +21,11 @@ function tick(game: GameOfLife): void {
 
 	game.pop = Helper.population(game.matrix);
 
+	Helper.triggerCallbacks(CallbackEvent.tick, game);
+
+	if (changes.length === 0) {
+		Helper.triggerCallbacks(CallbackEvent.stalled, game);
+	}
 	if (game.pop === 0) {
 		Helper.triggerCallbacks(CallbackEvent.extinct, game);
 	}
