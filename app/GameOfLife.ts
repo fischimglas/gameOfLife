@@ -1,4 +1,4 @@
-import {Callback, CallbackEvent, Cell, GameCf, GameOfLife, Matrix} from "./Inerface";
+import {Callback, CallbackEvent, Cell, GameCf, GameInitCf, GameOfLife, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import {Ui} from "./Ui";
@@ -54,8 +54,8 @@ export class gameOfLife implements GameOfLife {
 	callbacks: Callback[] = [];
 	actions: object = {};
 
-	constructor(cf: GameCf) {
-		this.cf = cf
+	constructor(cf: GameInitCf) {
+		this.cf = Factory.gameCf(cf);
 
 		Ui.init(this);
 	}
@@ -67,9 +67,10 @@ export class gameOfLife implements GameOfLife {
 	}
 
 	apply(cells: Cell[]): GameOfLife {
-		cells.map((cell: Cell) => {
+		cells.map((cell: Cell): void => {
 			let item = this.matrix[Helper.name(cell)];
 			if (typeof item !== 'object') {
+				console.warn('item does not exist', cell);
 				return;
 			}
 
@@ -109,7 +110,7 @@ export class gameOfLife implements GameOfLife {
 		}
 		const input = Math.max(1, parseInt(speed + ''));
 		this.cf.speed = Math.round(10000 / input);
-		
+
 		if (isRunning) {
 			this.start();
 		}

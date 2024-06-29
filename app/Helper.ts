@@ -1,5 +1,4 @@
 import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameOfLife, Matrix} from "./Inerface";
-import * as _ from "lodash";
 import {Factory} from "./Factory";
 
 function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
@@ -31,27 +30,30 @@ function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 }
 
 export const Helper = {
+	range(from: number, to: number): number[] {
+		return Array.from({length: (to - from )}, (x, i) => i + from);
+	},
 	name(cell: Coordinate): string {
 		return cell.x + 'X' + cell.y;
 	},
 	population(matrix: Matrix): number {
-		return _.values(matrix).filter((it: Cell) => it.alive === true).length;
+		return Object.values(matrix).filter((it: Cell) => it.alive === true).length;
 	},
 	siblings(matrix: Matrix, cell: Cell): Cell[] {
 		const pat = [-1, 0, 1];
 		let result = [];
 		pat.map((x: number) => pat.map((y: number): Cell => {
 			if (x === 0 && y === 0) {
-				return null;
+				return;
 			}
 
 			result.push(matrix[Helper.name(Factory.cell(cell.x + x, cell.y + y))]);
 		}));
 
-		return _.filter(result);
+		return result.filter(it => typeof it !== 'undefined');
 	},
 	calcChanges(matrix: Matrix): Cell[] {
-		return _.filter(_.values(matrix).map((cell: Cell) => gameOfLifeRules(matrix, cell)));
+		return Object.values(matrix).map((cell: Cell) => gameOfLifeRules(matrix, cell)).filter(it => it !== null);
 	},
 	getCellByCoord(game: GameOfLife, coordinate: Coordinate): Cell {
 		return game.matrix[this.name(coordinate)];

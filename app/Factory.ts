@@ -1,6 +1,6 @@
 import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameInitCf, GameOfLife} from "./Inerface";
-import * as _ from "lodash";
 import {gameOfLife} from "./GameOfLife";
+import {Helper} from "./Helper";
 
 const defaultGameCf = {
 	speed: 50,
@@ -54,7 +54,7 @@ export const Factory = {
 		const elementWidth = cf.radius * 2 + cf.gutter
 		const w = Math.ceil(cf.width / elementWidth);
 		const h = Math.ceil(cf.height / elementWidth);
-		return _.flatten(_.range(0, w).map((x: number) => _.range(0, h).map((y: number) => (this.cell(x, y, cf.color)))));
+		return Helper.range(0, w).map((x: number): Cell[] => Helper.range(0, h).map((y: number) => (this.cell(x, y, cf.color)))).flat();
 	},
 	cell(x: number = 0, y: number = 0, color: string = null, alive: boolean = false): Cell {
 		return {x, y, alive, color: color ? color : Factory.color(),}
@@ -73,8 +73,17 @@ export const Factory = {
 
 		return new gameOfLife(Factory.gameCf(cf));
 	},
-	gameCf(cf: object): GameCf {
-		return _.defaults(cf, defaultGameCf);
+	gameCf(cf: GameInitCf): GameCf {
+		const container = document.getElementById(cf.container);
+		if (!cf.width || cf.width === 'auto') {
+			cf.width = container.clientWidth;
+		}
+		if (!cf.height || cf.height === 'auto') {
+			cf.height = container.clientHeight;
+		}
+
+		// @ts-ignore
+		return Object.assign({}, defaultGameCf, cf);
 	},
 	callback(name: CallbackEvent, callback: Function): Callback {
 		return {name, callback};

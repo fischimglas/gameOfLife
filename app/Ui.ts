@@ -1,8 +1,6 @@
-import * as _ from "lodash";
 import {CallbackEvent, Cell, GameCf, GameOfLife, Matrix} from "./Inerface";
 import {Helper} from "./Helper";
 import {Factory} from "./Factory";
-
 
 export const Ui = {
 	init(game: GameOfLife): void {
@@ -11,11 +9,11 @@ export const Ui = {
 
 		Ui.draw(game.cf, game.matrix);
 
-		_.each(document.getElementsByClassName('action'), (control: HTMLElement) => {
+		Array.from(document.getElementsByClassName('action')).forEach((control: HTMLElement): void => {
 			control.addEventListener('click', () => this.callAction(game, control.getAttribute('data-action')));
 		});
 
-		_.each(document.getElementsByClassName('control'), (control: HTMLInputElement) => {
+		Array.from(document.getElementsByClassName('control')).forEach((control: HTMLInputElement): void => {
 			control.addEventListener('change', () => this.callAction(game, control.getAttribute('data-action'), control.value));
 		});
 
@@ -57,12 +55,12 @@ export const Ui = {
 		});
 	},
 	draw(cf: GameCf, matrix: Matrix): void {
-		window.requestAnimationFrame(() => {
+		window.requestAnimationFrame((): void => {
 			const elem = <HTMLCanvasElement>document.getElementById(cf.container);
 			const context = elem.getContext('2d');
-			const dots = _.values(matrix);
+			const dots = Object.values(matrix);
 			context.clearRect(0, 0, elem.width, elem.height);
-			dots.forEach((dot: Cell) => {
+			dots.forEach((dot: Cell): void => {
 				context.fillStyle = dot.alive === true ? dot.color : cf.colorCellDead;
 				context.beginPath();
 
@@ -77,7 +75,7 @@ export const Ui = {
 
 	},
 	callAction(game: GameOfLife, actionName: string, value?: string | number): void {
-		if (_.isFunction(game[actionName])) {
+		if (typeof game[actionName] === 'function') {
 			game[actionName](value);
 		}
 	}

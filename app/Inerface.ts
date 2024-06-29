@@ -1,6 +1,6 @@
 export interface Cell extends Coordinate {
 	alive: boolean,
-	color: string
+	color?: string
 }
 
 export interface Coordinate {

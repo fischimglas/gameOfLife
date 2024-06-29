@@ -1,18 +1,18 @@
 'use strict';
 
-import {Factory} from './Factory';
 import {CallbackEvent, Cell, GameOfLife} from './Inerface';
+import {gameOfLife} from "./GameOfLife";
 
-const instance = Factory.game({
+const instance = new gameOfLife({
 	container: 'new-game-of-life',
 });
 
 instance
 	.apply([
-		{x: 25, y: 25, alive: true, color: '#A1A1A1'},
-		{x: 25, y: 26, alive: true},
-		{x: 25, y: 27, alive: true},
-		{x: 26, y: 25, alive: true},
+		{x: 1, y: 5, alive: true, color: '#A1A1A1'},
+		{x: 1, y: 6, alive: true},
+		{x: 1, y: 7, alive: true},
+		{x: 2, y: 5, alive: true},
 
 		{x: 22, y: 25, alive: true},
 		{x: 22, y: 26, alive: true},
@@ -43,4 +43,4 @@ instance
 		cell.alive = true;
 	})
 
-//instance.start();
+instance.start();

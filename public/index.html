@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="preload" href="/vendor.js?t=22" as="script">
     <link rel="preload" href="/app.js?t=22" as="script">
 </head>
 <body>
@@ -27,7 +26,8 @@
                 <button class="action" data-action="tick">Tick</button>
                 <div>
                     <label>Speed</label>
-                    <input type="range" min="1" max="100" class="control" data-action="setSpeed" oninput="this.nextElementSibling.value = this.value">
+                    <input type="range" min="1" max="100" class="control" data-action="setSpeed"
+                           oninput="this.nextElementSibling.value = this.value">
                     <output></output>
                 </div>
             </div>
@@ -35,10 +35,10 @@
     </div>
 
 </main>
-<script type="text/javascript" src="/vendor.js?t=22"></script>
 <script type="text/javascript" src="/app.js?t=22"></script>
 <script type="text/javascript">
 	require('main');
+
 </script>
 </body>
 </html>
