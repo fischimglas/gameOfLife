@@ -16,6 +16,7 @@ export interface gameCf {
 	gutter: number,
 	speed: number,
 	container: string,
+	colorCellDead: string,
 }
 
 export interface GameOfLife {

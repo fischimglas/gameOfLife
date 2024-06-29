@@ -3,6 +3,17 @@ import * as _ from "lodash";
 import {gameOfLife} from "./GameOfLife";
 import {Helper} from "./Helper";
 
+const defaultGameCf = {
+	speed: 50,
+	radius: 3,
+	gutter: 2,
+	width: 20,
+	height: 20,
+	container: 'new-game-of-life',
+	color: null,
+	colorCellDead: '#eeeeee',
+};
+
 export const Factory = {
 	createMatrix(state: gameCf): Cell[] {
 		return _.flatten(_.range(0, state.width).map((x: number) => _.range(0, state.height).map((y: number) => (this.cell(x, y, state.color)))));
@@ -21,8 +32,11 @@ export const Factory = {
 			y
 		}
 	},
-	game(cf: gameCf): GameOfLife {
-		return new gameOfLife(cf);
+	game(cf: object): GameOfLife {
+		return new gameOfLife(Factory.gameCf(cf));
+	},
+	gameCf(cf: object): gameCf {
+		return _.defaults(cf, defaultGameCf)
 	},
 	callback(name: CallbackEvent, callback: Function): Callback {
 		return {name, callback};

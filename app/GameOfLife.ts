@@ -1,7 +1,6 @@
 import {Callback, CallbackEvent, Cell, gameCf, GameOfLife, Matrix} from "./Inerface";
 import {Factory} from "./Factory";
 import {Helper} from "./Helper";
-import * as _ from "lodash";
 import {Ui} from "./Ui";
 
 let timeout = null;
@@ -15,8 +14,6 @@ function tick(game: GameOfLife): void {
 	const changes = Helper.calcChanges(game.matrix);
 	if (changes.length === 0) {
 		Helper.triggerCallbacks(CallbackEvent.stalled, game);
-
-		game.stop();
 	}
 	changes.map((it: Cell): void => {
 		const name = Helper.name(it);
@@ -32,7 +29,6 @@ function tick(game: GameOfLife): void {
 
 	if (game.pop === 0) {
 		Helper.triggerCallbacks(CallbackEvent.extinct, game);
-		game.stop();
 	}
 
 	game.cycle += 1;
@@ -74,8 +70,13 @@ export class gameOfLife implements GameOfLife {
 	apply(cells: Cell[]): GameOfLife {
 		cells.map((cell: Cell) => {
 			let item = this.matrix[Helper.name(cell)];
-			if (_.isObject(item)) {
-				this.matrix[Helper.name(cell)].alive = cell.alive === true
+			if (typeof item !== 'object') {
+				return;
+			}
+
+			item.alive = cell.alive === true;
+			if (cell.color) {
+				item.color = cell.color;
 			}
 		});
 

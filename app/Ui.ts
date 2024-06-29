@@ -27,7 +27,9 @@ export const Ui = {
 		priv.container.addEventListener('click', e => {
 			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
 			const cell = Helper.cellByPos(game, coordinate);
-
+			if (typeof cell !== 'object') {
+				return;
+			}
 			Helper.triggerCallbacks(CallbackEvent.click, game, cell);
 
 			this.draw(game.cf, game.matrix);
@@ -44,9 +46,11 @@ export const Ui = {
 			if (priv.mouseDown !== true) {
 				return;
 			}
-			console.log('trigger move');
 			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
 			const cell = Helper.cellByPos(game, coordinate);
+			if (typeof cell !== 'object') {
+				return;
+			}
 			Helper.triggerCallbacks(CallbackEvent.hover, game, cell);
 
 			this.draw(game.cf, game.matrix);
@@ -59,7 +63,7 @@ export const Ui = {
 			const dots = _.values(matrix);
 			context.clearRect(0, 0, elem.width, elem.height);
 			dots.forEach((dot: Cell) => {
-				context.fillStyle = dot.alive === true ? dot.color : '#eee';
+				context.fillStyle = dot.alive === true ? dot.color : cf.colorCellDead;
 				context.beginPath();
 
 				const pos = Helper.calcPosByCoord(cf, dot);

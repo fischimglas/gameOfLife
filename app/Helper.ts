@@ -62,7 +62,8 @@ export const Helper = {
 		return cell.x + 'X' + cell.y;
 	},
 	color(cycle: number): string {
-		if (cycle % 30 === 0) {
+
+		if (cycle !== 0 && cycle % 30 === 0) {
 			colorIndex += 1;
 			if (colors.length <= colorIndex) {
 				colorIndex = 0;
