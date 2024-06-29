@@ -8,7 +8,7 @@
     "build": "brunch build --production"
   },
   "author": {
-    "url": "http://codenoise.ch",
+    "url": "https://codenoise.ch",
     "name": "Jvo A. Maurer",
     "email": "jvo.maurer@gmail.com"
   },
