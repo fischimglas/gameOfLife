@@ -36,9 +36,6 @@ export const Helper = {
 	name(cell: Coordinate): string {
 		return cell.x + 'X' + cell.y;
 	},
-	population(matrix: Matrix): number {
-		return Object.values(matrix).filter((it: Cell) => it.alive === true).length;
-	},
 	siblings(matrix: Matrix, cell: Cell): Cell[] {
 		const pat = [-1, 0, 1];
 		let result = [];

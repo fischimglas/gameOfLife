@@ -1,6 +1,6 @@
 'use strict';
 
-import {CallbackEvent, Cell, CfElement, GameOfLife} from './Inerface';
+import {CallbackEvent, Cell, GameOfLife} from './Inerface';
 import {gameOfLife} from "./GameOfLife";
 import {Factory} from "./Factory";
 
@@ -26,7 +26,7 @@ instance
 		{x: 27, y: 27, alive: true},
 	])
 	.on(CallbackEvent.tick, (game: GameOfLife): void => {
-		document.getElementById('pop').innerHTML = game.pop + '';
+		document.getElementById('pop').innerHTML = game.population() + '';
 		document.getElementById('cycle').innerHTML = game.cycle + '';
 	})
 	.on(CallbackEvent.extinct, (game: GameOfLife): void => {
@@ -46,7 +46,7 @@ instance
 		cell.alive = true;
 		cell.color = Factory.color(0);
 	})
-	.setCf(CfElement.colorFactory, (): string => {
-		return instance.pop > 100 ? 'red' : 'green';
+	.setColorFactory((): string => {
+		return instance.population() > 100 ? 'red' : 'green';
 	})
 	.start();

@@ -19,14 +19,12 @@ function tick(game: GameOfLife): void {
 
 	Ui.draw(game.cf, game.matrix);
 
-	game.pop = Helper.population(game.matrix);
-
 	Helper.triggerCallbacks(CallbackEvent.tick, game);
 
 	if (changes.length === 0) {
 		Helper.triggerCallbacks(CallbackEvent.stalled, game);
 	}
-	if (game.pop === 0) {
+	if (game.population() === 0) {
 		Helper.triggerCallbacks(CallbackEvent.extinct, game);
 	}
 
@@ -52,12 +50,15 @@ export class gameOfLife implements GameOfLife {
 	isRunning: boolean = false
 	pop: number = 0
 	callbacks: Callback[] = [];
-	actions: object = {};
 
 	constructor(cf: GameInitCf) {
 		this.cf = Factory.gameCf(cf);
 
 		Ui.init(this);
+	}
+
+	population(): number {
+		return Object.values(this.matrix).filter((it: Cell) => it.alive === true).length;
 	}
 
 	setCell(cell: Cell): GameOfLife {
@@ -66,12 +67,8 @@ export class gameOfLife implements GameOfLife {
 		return this;
 	}
 
-	setCf(name: string | GameCf, value: any): GameOfLife {
-		if (typeof name === 'object') {
-			this.cf = name;
-		} else {
-			this.cf[name] = value;
-		}
+	setColorFactory(colorFactory: Function): GameOfLife {
+		this.cf.colorFactory = colorFactory;
 
 		return this;
 	}

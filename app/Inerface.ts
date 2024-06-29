@@ -33,18 +33,17 @@ export interface GameInitCf {
 
 export interface GameOfLife {
 	cf: GameCf,
-	pop: number,
 	cycle: number,
 	isRunning: boolean,
 	callbacks: object[],
 	matrix: Matrix,
-	actions: object,
 	start: Function,
 	stop: Function
 	reset: Function
 	apply: Function
 	setCell: Function
-	setCf: Function
+	setColorFactory: Function
+	population: Function
 	on: Function
 }
 
