@@ -1,7 +1,7 @@
 import _ from "lodash";
 import {State} from './State';
-import {Helper} from './Helper';
-import {Factory} from './Factory';
+import {Helper} from '../app/Helper';
+import {Factory} from '../app/Factory';
 
 const colors = ['#008fd7', '#024494', '#002d71', '#ff1f11', '#00be1b'];
 

@@ -24,9 +24,11 @@ export interface Game {
 	isRunning: boolean,
 	callbacks: object[],
 	matrix: Matrix,
+	actions: object,
 	start: Function,
 	stop: Function
 	apply: Function
+	setDot: Function
 	on: Function
 }
 

@@ -20,20 +20,19 @@
                 <li>Cycle: <span id="cycle"></span></li>
                 <li><span id="status"></span></li>
             </ul>
+
+            <div>
+                <button class="action" data-action="start">Start</button>
+                <button class="action" data-action="stop">Stop</button>
+                <button class="action" data-action="tick">Tick</button>
+                <div>
+                    <label>Speed</label>
+                    <input type="range" min="0" max="1000" class="control" data-action="setSpeed" id="test">
+                </div>
+            </div>
         </div>
     </div>
 
-    <canvas id="game-of-life" width="800" height="800"></canvas>
-
-    <div>
-        <button class="action" data-action="start">Start</button>
-        <button class="action" data-action="stop">Stop</button>
-        <button class="action" data-action="tick">Tick</button>
-        <div>
-            <label>Speed</label>
-            <input type="range" min="0" max="1000" class="control" data-action="speed">
-        </div>
-    </div>
 </main>
 <script type="text/javascript" src="/vendor.js?t=22"></script>
 <script type="text/javascript" src="/app.js?t=22"></script>

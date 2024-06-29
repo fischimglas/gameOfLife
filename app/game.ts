@@ -15,6 +15,8 @@ function triggerCallbacks(name: CallbackEvent, game: Game): void {
 }
 
 function tick(game: Game): void {
+	triggerCallbacks(CallbackEvent.tick, game);
+
 	const color = Helper.color(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
@@ -33,12 +35,6 @@ function tick(game: Game): void {
 
 	Ui.draw(game.cf, game.matrix);
 
-	triggerCallbacks(CallbackEvent.tick, game);
-}
-
-
-function runLoop(game: Game): void {
-	tick(game);
 	game.pop = Helper.population(game.matrix);
 
 	if (game.pop === 0) {
@@ -47,6 +43,11 @@ function runLoop(game: Game): void {
 	}
 
 	game.cycle += 1;
+}
+
+
+function runLoop(game: Game): void {
+	tick(game);
 
 	timeout = setTimeout(() => {
 		if (game.isRunning !== true) {
@@ -63,14 +64,12 @@ export class game implements Game {
 	isRunning: boolean = false
 	pop: number = 0
 	callbacks: Callback[] = [];
+	actions: object = {};
 
 	constructor(cf: gameCf) {
 		this.cf = cf
 
-		Factory.createMatrix(cf)
-			.forEach((dot: Dot) => this.setDot(dot));
-
-		window.requestAnimationFrame(() => Ui.draw(this.cf, this.matrix));
+		Ui.init(this);
 	}
 
 	setDot(dot: Dot): void {
@@ -96,13 +95,24 @@ export class game implements Game {
 		clearTimeout(timeout);
 	}
 
-	setSpeed(speed: number): void {
-		this.stop();
-		this.cf.speed = speed;
-		this.start();
+	tick(): void {
+		tick(this);
+	}
+
+	setSpeed(speed: number | string): void {
+		const isRunning = this.isRunning;
+		if (isRunning) {
+			this.stop();
+		}
+
+		this.cf.speed = parseInt(speed + '');
+		if (isRunning) {
+			this.start();
+		}
 	}
 
 	on(name: CallbackEvent, callback: Function) {
 		this.callbacks.push(Factory.callback(name, callback));
 	}
+
 }
