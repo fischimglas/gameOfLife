@@ -1,47 +1,24 @@
 {
-  "name": "gameoflife",
-  "description": "John Conways Game of Life, implemented in Javascript",
-  "version": "0.0.2",
-  "main": "index.js",
+  "name": "gameOfLife",
+  "description": "Game of life",
+  "private": true,
+  "version": "1.10.0",
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production"
   },
   "author": {
-    "url": "https://codenoise.ch",
-    "name": "Jvo Maurer",
+    "url": "http://codenoise.ch",
+    "name": "Jvo A. Maurer",
     "email": "jvo.maurer@gmail.com"
   },
-  "repository": {
-    "url": "https://bitbucket.org/fischimglas/gameoflife.git"
-  },
-  "keywords": [
-    "vue",
-    "javascript",
-    "brunch",
-    "gameoflife"
-  ],
   "dependencies": {
-    "lodash": "^4.17.15"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@vuikit/icons": "^0.8.1",
-    "@vuikit/theme": "^0.8.1",
-    "node-sass": "^4.14.1",
-    "sass-brunch": "^3.0.0",
-    "uikit": "^3.2.3",
-    "vue": "^2.4.4",
-    "vue-router": "^2.7.0",
-    "vuex": "^3.1.1",
-    "vuikit": "^0.8.10",
-    "babel-brunch": "^6.1.1",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "brunch": "^2.10.17",
-    "vue-brunch": "^2.0.3"
-  },
-  "license": "ISC"
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "babel-brunch": "^7.0.1",
+    "babel-runtime": "^6.26.0",
+    "brunch": "^4.0.2",
+    "lodash": "^4.17.21",
+    "typescript-brunch": "^2.3.0"
+  }
 }
