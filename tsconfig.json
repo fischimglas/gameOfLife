@@ -1,5 +1,16 @@
 {
   "compilerOptions": {
+    "compilerOptions": {
+      "allowImportingTsExtensions": true,
+      "verbatimModuleSyntax": true,
+      "target": "ESNext",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "strict": true,
+      "jsx": "preserve",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+    },
     "lib": [
       "es2019",
       "dom",

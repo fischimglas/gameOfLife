@@ -6,7 +6,7 @@ function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 	let isAliveNow = isAlive;
 
 	// Get neighbours.
-	const siblings = Helper.siblings(matrix, cell);
+	const siblings = Helper.getNeighbors(matrix, cell);
 	const numAlive = siblings.filter((it: Cell) => it.alive === true).length;
 
 	// #1 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -31,23 +31,24 @@ function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 
 export const Helper = {
 	range(from: number, to: number): number[] {
-		return Array.from({length: (to - from )}, (x, i) => i + from);
+		return Array.from({length: (to - from)}, (x, i) => i + from);
 	},
 	name(cell: Coordinate): string {
-		return cell.x + 'X' + cell.y;
+		return `${cell.x}X${cell.y}`;
 	},
-	siblings(matrix: Matrix, cell: Cell): Cell[] {
-		const pat = [-1, 0, 1];
-		let result = [];
-		pat.map((x: number) => pat.map((y: number): Cell => {
-			if (x === 0 && y === 0) {
-				return;
-			}
+	getNeighbors(matrix: Matrix, cell: Cell): Cell[] {
+		const directions = [-1, 0, 1];
+		const neighbors: Cell[] = [];
 
-			result.push(matrix[Helper.name(Factory.cell(cell.x + x, cell.y + y))]);
-		}));
+		directions.forEach(dx => {
+			directions.forEach(dy => {
+				if (dx === 0 && dy === 0) return;
+				const neighbor = matrix[this.name(Factory.coordinate(cell.x + dx, cell.y + dy))];
+				if (neighbor) neighbors.push(neighbor);
+			});
+		});
 
-		return result.filter(it => typeof it !== 'undefined');
+		return neighbors;
 	},
 	calcChanges(matrix: Matrix): Cell[] {
 		return Object.values(matrix).map((cell: Cell) => gameOfLifeRules(matrix, cell)).filter(it => it !== null);
@@ -56,8 +57,7 @@ export const Helper = {
 		return game.matrix[this.name(coordinate)];
 	},
 	cellByPos(game: GameOfLife, clickPos: Coordinate): Cell {
-		const R = game.cf.radius;
-		const G = game.cf.gutter;
+		const {radius: R, gutter: G} = game.cf;
 
 		const x = Math.round((clickPos.x - R) / (R * 2 + G));
 		const y = Math.round((clickPos.y - R) / (R * 2 + G));
@@ -65,23 +65,22 @@ export const Helper = {
 		return this.getCellByCoord(game, Factory.coordinate(x, y));
 	},
 	calcPosByCoord(cf: GameCf, coordinate: Coordinate): Coordinate {
-		const R = cf.radius;
-		const G = cf.gutter;
+		const {radius: R, gutter: G} = cf;
 
 		const x = coordinate.x * R * 2 + coordinate.x * G + R;
 		const y = coordinate.y * R * 2 + coordinate.y * G + R;
 
 		return Factory.coordinate(x, y);
 	},
-	triggerCallbacks(name: CallbackEvent, game: GameOfLife, data: any = null): void {
-		game.callbacks.map((it: Callback) => {
-			if (name === it.name) {
-				it.callback(game, data);
+	triggerCallbacks(eventName: CallbackEvent, game: GameOfLife, data: any = null): void {
+		game.callbacks.forEach((callbackObj: Callback) => {
+			if (eventName === callbackObj.name) {
+				callbackObj.callback(game, data);
 			}
 		})
 	},
 	getMouseInContainerCoordinates(container: HTMLElement, e: MouseEvent): Coordinate {
-		const pos = container.getBoundingClientRect();
-		return Factory.coordinate(e.clientX - pos.left, e.clientY - pos.top);
+		const rect = container.getBoundingClientRect();
+		return Factory.coordinate(e.clientX - rect.left, e.clientY - rect.top);
 	}
 }

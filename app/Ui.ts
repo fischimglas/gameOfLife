@@ -57,12 +57,12 @@ export const Ui = {
 	},
 	draw(cf: GameCf, matrix: Matrix): void {
 		window.requestAnimationFrame((): void => {
-			const elem = <HTMLCanvasElement>document.getElementById(cf.container);
+			const elem = document.getElementById(cf.container) as HTMLCanvasElement;
 			const context = elem.getContext('2d');
 			const cells = Object.values(matrix);
 			context.clearRect(0, 0, elem.width, elem.height);
 			cells.forEach((cell: Cell): void => {
-				context.fillStyle = cell.alive === true ? cell.color : cf.colorCellDead;
+				context.fillStyle = cell.alive ? cell.color : cf.colorCellDead;
 				context.beginPath();
 
 				const pos = Helper.calcPosByCoord(cf, cell);

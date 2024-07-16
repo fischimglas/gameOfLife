@@ -7,15 +7,17 @@ import {Factory} from "./Factory";
 const instance = new gameOfLife({
 	container: 'new-game-of-life',
 	radius: 4,
-	gutter: 2
+	gutter: 2,
+	speed: 200
 });
 
 instance
 	.apply([
-		{x: 1, y: 5, alive: true, color: '#A1A1A1'},
-		{x: 1, y: 6, alive: true},
-		{x: 1, y: 7, alive: true},
-		{x: 2, y: 5, alive: true},
+		{x: 21, y: 25, alive: true, color: '#A1A1A1'},
+		{x: 21, y: 26, alive: true},
+		{x: 21, y: 27, alive: true},
+		{x: 22, y: 25, alive: true},
+		{x: 20, y: 26, alive: true},
 	])
 	.on(CallbackEvent.tick, (game: GameOfLife): void => {
 		document.getElementById('pop').innerHTML = game.population() + '';
@@ -40,5 +42,7 @@ instance
 	})
 	.setColorFactory((): string => {
 		return instance.population() > 100 ? 'red' : 'green';
-	})
-	.start();
+	});
+
+setTimeout(() => instance.start(), 1200);
+

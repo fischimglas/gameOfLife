@@ -9,7 +9,7 @@ function tick(game: GameOfLife): void {
 	const color = game.cf.colorFactory(game.cycle);
 
 	const changes = Helper.calcChanges(game.matrix);
-	changes.map((it: Cell): void => {
+	changes.forEach((it: Cell): void => {
 		const name = Helper.name(it);
 		if (game.matrix[name].alive !== true && it.alive === true) {
 			game.matrix[name].color = color;
@@ -74,9 +74,9 @@ export class gameOfLife implements GameOfLife {
 	}
 
 	apply(cells: Cell[]): GameOfLife {
-		cells.map((cell: Cell): void => {
+		cells.forEach((cell: Cell): void => {
 			let item = this.matrix[Helper.name(cell)];
-			if (typeof item !== 'object') {
+			if (!item) {
 				console.warn('item does not exist', cell);
 				return;
 			}
@@ -99,7 +99,9 @@ export class gameOfLife implements GameOfLife {
 
 	stop(): GameOfLife {
 		this.isRunning = false;
-		clearTimeout(timeout);
+		if (timeout !== null) {
+			clearTimeout(timeout);
+		}
 
 		return this;
 	}
@@ -126,8 +128,8 @@ export class gameOfLife implements GameOfLife {
 		if (isRunning) {
 			this.stop();
 		}
-		const input = Math.max(1, parseInt(speed + ''));
-		this.cf.speed = Math.round(10000 / input);
+		const parsedSpeed = Math.max(1, parseInt(speed + ''));
+		this.cf.speed = Math.round(10000 / parsedSpeed);
 
 		if (isRunning) {
 			this.start();

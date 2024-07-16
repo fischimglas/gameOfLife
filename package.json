@@ -1,6 +1,6 @@
 {
   "name": "gameOfLife",
-  "description": "Game of life",
+  "description": "John Conways Game of life in a simple javascript implementation",
   "private": true,
   "version": "1.0.0",
   "scripts": {
@@ -12,7 +12,7 @@
     "name": "Jvo A. Maurer",
     "email": "jvo.maurer@gmail.com"
   },
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "babel-brunch": "^7.0.1",

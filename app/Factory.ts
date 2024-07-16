@@ -32,16 +32,8 @@ const colors = [
 	'#840271',
 ];
 
-let colorIndex = 0;
-
 function colorFactory(cycle: number = 0): string {
-	if (cycle !== 0 && cycle % 30 === 0) {
-		colorIndex += 1;
-		if (colors.length <= colorIndex) {
-			colorIndex = 0;
-		}
-	}
-
+	const colorIndex = Math.floor(cycle / 30) % colors.length;
 	return colors[colorIndex];
 }
 
