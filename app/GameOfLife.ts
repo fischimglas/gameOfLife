@@ -3,7 +3,7 @@ import {Factory} from "./Factory";
 import {Helper} from "./Helper";
 import {Ui} from "./Ui";
 
-let timeout = null;
+let timeout: ReturnType<typeof setTimeout> = null;
 
 function tick(game: GameOfLife): void {
 	const color = game.cf.colorFactory(game.cycle);
@@ -138,7 +138,7 @@ export class gameOfLife implements GameOfLife {
 		return this;
 	}
 
-	on(name: CallbackEvent, callback: Function): GameOfLife {
+	on(name: CallbackEvent, callback: () => void): GameOfLife {
 		this.callbacks.push(Factory.callback(name, callback));
 
 		return this;

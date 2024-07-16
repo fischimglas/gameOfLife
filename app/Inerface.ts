@@ -32,10 +32,11 @@ export interface GameInitCf {
 }
 
 export interface GameOfLife {
+	[key: string]: any;
 	cf: GameCf,
 	cycle: number,
 	isRunning: boolean,
-	callbacks: object[],
+	callbacks: Callback[],
 	matrix: Matrix,
 	start: Function,
 	stop: Function
@@ -48,12 +49,12 @@ export interface GameOfLife {
 }
 
 export interface Matrix {
-
+	[index: string]: any
 }
 
 export interface Callback {
 	name: CallbackEvent
-	callback: Function
+	callback: (game: GameOfLife, data: any) => void;
 }
 
 export enum CallbackEvent {

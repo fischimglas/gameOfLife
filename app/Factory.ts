@@ -1,4 +1,5 @@
 import {Callback, CallbackEvent, Cell, Coordinate, GameCf, GameInitCf} from "./Inerface";
+
 import {Helper} from "./Helper";
 
 const colors = [
@@ -34,17 +35,18 @@ const colors = [
 
 function colorFactory(cycle: number = 0): string {
 	const colorIndex = Math.floor(cycle / 30) % colors.length;
+
 	return colors[colorIndex];
 }
 
 const defaultGameCf = {
-	speed: 50,
-	radius: 15,
-	gutter: 5,
-	container: 'new-game-of-life',
-	color: null,
-	colorCellDead: '#eeeeee',
-	colorFactory: colorFactory
+	speed: <number>50,
+	radius: <number>15,
+	gutter: <number>5,
+	container: <string>'new-game-of-life',
+	color: <string>null,
+	colorCellDead: <string>'#eeeeee',
+	colorFactory
 };
 
 export const Factory = {
@@ -75,7 +77,7 @@ export const Factory = {
 		// @ts-ignore
 		return Object.assign({}, defaultGameCf, cf);
 	},
-	callback(name: CallbackEvent, callback: Function): Callback {
+	callback(name: CallbackEvent, callback: () => void): Callback {
 		return {name, callback};
 	}
 }

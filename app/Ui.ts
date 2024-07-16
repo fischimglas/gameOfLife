@@ -22,6 +22,9 @@ export const Ui = {
 			mouseDown: <boolean>false,
 		}
 
+		priv.container.width = game.cf.width;
+		priv.container.height = game.cf.height;
+
 		priv.container.addEventListener('click', e => {
 			const coordinate = Helper.getMouseInContainerCoordinates(priv.container, e);
 			const cell = Helper.cellByPos(game, coordinate);
@@ -58,6 +61,9 @@ export const Ui = {
 	draw(cf: GameCf, matrix: Matrix): void {
 		window.requestAnimationFrame((): void => {
 			const elem = document.getElementById(cf.container) as HTMLCanvasElement;
+			if (!elem) {
+				return;
+			}
 			const context = elem.getContext('2d');
 			const cells = Object.values(matrix);
 			context.clearRect(0, 0, elem.width, elem.height);
@@ -76,7 +82,8 @@ export const Ui = {
 
 	},
 	callAction(game: GameOfLife, actionName: string, value?: string | number): void {
-		if (typeof game[actionName] === 'function') {
+
+		if (actionName in game && typeof game[actionName] === 'function') {
 			game[actionName](value);
 		}
 	}

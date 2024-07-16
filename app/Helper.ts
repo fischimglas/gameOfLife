@@ -82,5 +82,18 @@ export const Helper = {
 	getMouseInContainerCoordinates(container: HTMLElement, e: MouseEvent): Coordinate {
 		const rect = container.getBoundingClientRect();
 		return Factory.coordinate(e.clientX - rect.left, e.clientY - rect.top);
+	},
+	getCenter(cf: GameCf): Coordinate {
+		const size = ((cf.radius * 2) + cf.gutter) * 2;
+
+		return {
+			x: Math.round(cf.width / size) ,
+			y: Math.round(cf.height / size)
+		};
+	},
+	translateCellPositions(cf: GameCf, items: Cell[]): Cell[] {
+		const center = this.getCenter(cf);
+		return items.map(it => ({...it, x: it.x + center.x, y: it.y + center.y}));
 	}
 }
+
