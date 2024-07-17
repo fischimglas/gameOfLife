@@ -31,12 +31,12 @@ instance
 		{x: 1, y: 1, alive: true, '#e3e3e3'},
 	]))
 	// Add Event Handler. available Events: tick, extinct, stalled, click, hover
-	.on(CallbackEvent.click, (game, cell): void => {
+	.on(CallbackEvent.click, (game, cell) => {
 		cell.color = color;
 		cell.alive = true;
 	})
 	// Set the color of a living cell when it becomes alive. 
-	.setColorFactory((): string => {
+	.setColorFactory(() => {
 		return '#e3e3e3';
 	})
 	// Start the game
