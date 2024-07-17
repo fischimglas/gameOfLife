@@ -5,9 +5,8 @@ function gameOfLifeRules(matrix: Matrix, cell: Cell): Cell {
 	const isAlive = (cell.alive === true);
 	let isAliveNow = isAlive;
 
-	// Get neighbours.
-	const siblings = Helper.getNeighbors(matrix, cell);
-	const numAlive = siblings.filter((it: Cell) => it.alive === true).length;
+	const neighbors = Helper.getNeighbors(matrix, cell);
+	const numAlive = neighbors.filter((it: Cell) => it.alive === true).length;
 
 	// #1 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 	if (2 > numAlive) {

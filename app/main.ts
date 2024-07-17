@@ -1,3 +1,6 @@
+/**
+ * Sample initialization of game-of-life
+ */
 'use strict';
 
 import {CallbackEvent, Cell, GameOfLife} from './Inerface';
