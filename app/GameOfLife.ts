@@ -7,8 +7,8 @@ let timeout: ReturnType<typeof setTimeout> = null;
 
 function tick(game: GameOfLife): void {
 	const color = game.cf.colorFactory(game.cycle);
-
 	const changes = Helper.calcChanges(game.matrix);
+
 	changes.forEach((it: Cell): void => {
 		const name = Helper.name(it);
 		if (game.matrix[name].alive !== true && it.alive === true) {
@@ -30,7 +30,6 @@ function tick(game: GameOfLife): void {
 
 	game.cycle += 1;
 }
-
 
 function runLoop(game: GameOfLife): void {
 	tick(game);
