@@ -1,6 +1,6 @@
 {
   "name": "gameOfLife",
-  "description": "John Conways Game of life in a simple javascript implementation",
+  "description": "A simple TypeScript implementation of John Conway's Game of Life.",
   "private": true,
   "version": "1.0.0",
   "scripts": {
